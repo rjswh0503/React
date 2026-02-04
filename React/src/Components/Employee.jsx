@@ -37,7 +37,7 @@ const Employee = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {employee.map(emp => (
+                    {employee.filter(emp => emp.role !== 'ADMIN' && emp.position !== '관리자').map(emp => (
                         <tr key={emp.id}>
                             <td style={{ padding: '12px', width: '10%' }}>{emp.employeeNo}</td>
                             <td style={{ padding: '12px', width: '10%' }}>{emp.name}</td>
