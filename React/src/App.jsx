@@ -6,6 +6,7 @@ import Register from './page1/register';
 import Home from './page1/home';
 import Good from './page1/good';
 import BoardList from './board/boardList';
+import BoardDetail from './board/BoardDetail';
 
 
 function App() {
@@ -18,6 +19,7 @@ function App() {
         <Route path='/home' element={<Home/>}/>
         <Route path='/good' element={<Good/>}/>
         <Route path='/board/list' element={<BoardList/>}/>
+        <Route path='/board/:id' element={<BoardDetail/>}/>
       </Routes>
     </BrowserRouter>
   )

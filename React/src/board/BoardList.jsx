@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../api/api';
 
 
@@ -44,7 +45,7 @@ const BoardList = () => {
                                     </span>
                                 )}
                                 <span className='truncate text-gray-700 group-hover:text-blue-600 font-medium cursor-pointer'>
-                                    {board.title}
+                                  <Link to={`/board/${board.noticeId}`}>{board.title}</Link>  
                                 </span>
                             </div>
 
