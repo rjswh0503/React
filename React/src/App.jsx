@@ -5,6 +5,7 @@ import Login from './page1/login';
 import Register from './page1/register';
 import Home from './page1/home';
 import Good from './page1/good';
+import BoardList from './board/boardList';
 
 
 function App() {
@@ -16,7 +17,7 @@ function App() {
         <Route path='/admin/register' element={<Register/>} />
         <Route path='/home' element={<Home/>}/>
         <Route path='/good' element={<Good/>}/>
-       
+        <Route path='/board/list' element={<BoardList/>}/>
       </Routes>
     </BrowserRouter>
   )

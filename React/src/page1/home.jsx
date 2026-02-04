@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/api';
 import Register from './register';
 import Employee from '../Components/Employee.jsx';
-
+import BoardList from '../board/boardList.jsx';
 
 function Home() {
     const [user, setUser] = useState(null);
@@ -67,24 +67,18 @@ function Home() {
             <div className='grid grid-cols-2 gap-6'>
                 {/* 공지사항 카드 */}
                 <div className='bg-white p-8 rounded-[32px] border border-gray-100 shadow-sm'>
+                    
                     <div className="flex justify-between items-center mb-6">
                         <h3 className='font-black text-lg'>공지사항</h3>
-                        <button className='text-xs text-gray-400 hover:text-gray-600 font-bold'>더보기 +</button>
+                        <button className='text-xs text-gray-400 hover:text-gray-600 font-bold'>
+                            <Link to={"/board/list"}>더보기 +</Link>
+                        </button>
                     </div>
-                    <ul className='space-y-4'>
-                        <li className='flex items-center justify-between text-sm group cursor-pointer'>
-                            <span className='text-gray-600 group-hover:text-blue-500 transition-colors'>[필독] 2026년 설 연휴 휴무 안내</span>
-                            <span className='text-gray-300 text-xs'>01.12</span>
-                        </li>
-                        <li className='flex items-center justify-between text-sm group cursor-pointer'>
-                            <span className='text-gray-600 group-hover:text-blue-500 transition-colors'>사내 식당 메뉴 개편 안내</span>
-                            <span className='text-gray-300 text-xs'>01.10</span>
-                        </li>
-                        <li className='flex items-center justify-between text-sm group cursor-pointer'>
-                            <span className='text-gray-600 group-hover:text-blue-500 transition-colors'>보안 소프트웨어 업데이트 공지</span>
-                            <span className='text-gray-300 text-xs'>01.08</span>
-                        </li>
-                    </ul>
+
+                    {/* 게시글 리스트 (flex 밖으로 분리) */}
+                    <div>
+                        <BoardList className='space-y-4' />
+                    </div>
                 </div>
 
                 {/* 내 할 일 (To-do) 카드 */}
@@ -186,13 +180,13 @@ function Home() {
                     </div>
                 )}
 
-                 {activeMenu === 'manage-users' && (
+                {activeMenu === 'manage-users' && (
                     <div className="bg-[#F8F9FA] p-8 rounded-[32px]">
                         <h2 className="text-xl font-black mb-6 text-blue-600">사원 목록</h2>
                         <div>
-                        <Employee />
+                            <Employee />
                         </div>
-                        
+
                     </div>
                 )}
 
