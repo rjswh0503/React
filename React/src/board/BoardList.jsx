@@ -26,44 +26,34 @@ const BoardList = () => {
         fetchBoardList();
     }, [])
 
-
-
-
-
-
-
-
-
     return (
 
         <>
             <div>
-                <ul className='space-y-1'>
-                    {boardList.map(board => (
-
+                <ul className='space-y-3'> {/* 간격을 살짝 좁히면 더 밀도 있어 보입니다 */}
+                    {boardList.slice(0, 3).map(board => (
                         <li
                             key={board.id}
-                            className='flex items-center justify-around text-sm group'
+                            className='flex items-center justify-between px-4 py-2 text-sm group hover:bg-gray-50 rounded-lg transition-all'
                         >
-                            <div>
-                                {(new Date() - new Date(board.createdAt)) < 24 * 60 * 60 * 1000 ? (
-                                    <span className='text-red-500 text-xs font-bold bg-red-50 px-2 py-0.5 rounded'>
-                                        최신
+                            {/* 왼쪽 영역: 태그 + 제목 */}
+                            <div className='flex items-center gap-3 overflow-hidden'>
+                                {(new Date() - new Date(board.createdAt)) < 24 * 60 * 60 * 1000 && (
+                                    <span className='shrink-0 text-[10px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded'>
+                                        NEW
                                     </span>
-                                ) : null}
-                            </div>
-                            <div>
-                                <span className='text-gray-600 group-hover:text-blue-500 transition-colors cursor-pointer'>
+                                )}
+                                <span className='truncate text-gray-700 group-hover:text-blue-600 font-medium cursor-pointer'>
                                     {board.title}
                                 </span>
                             </div>
-                            <div>
-                                <span className='text-gray-600 text-xs'>
-                                    {new Date(board.createdAt).toLocaleDateString('ko-KR')}
+
+                            {/* 오른쪽 영역: 날짜 + 직무(포지션) */}
+                            <div className='flex items-center gap-4 shrink-0 ml-4'>
+                                <span className='text-gray-400 text-xs'>
+                                    {new Date(board.createdAt).toLocaleDateString('ko-KR').slice(0, -1)}
                                 </span>
-                            </div>
-                            <div>
-                                <span className='text-black text-xs'>
+                                <span className='text-gray-500 text-xs bg-gray-100 px-2 py-0.5 rounded-full'>
                                     {board.position}
                                 </span>
                             </div>

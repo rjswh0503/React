@@ -4,6 +4,7 @@ import api from '../api/api';
 import Register from './register';
 import Employee from '../Components/Employee.jsx';
 import BoardList from '../board/boardList.jsx';
+import AttendancePanel from '../Components/AttendancePanel.jsx';
 
 function Home() {
     const [user, setUser] = useState(null);
@@ -163,9 +164,7 @@ function Home() {
 
                 {activeMenu === 'attendance' && (
                     <div className="bg-[#F8F9FA] p-8 rounded-[32px]">
-                        <h2 className="text-xl font-black mb-6">나의 상세 근태기록</h2>
-                        {/* 이전 테이블 코드 넣는 자리 */}
-                        <p className="text-gray-400 text-sm">상세 테이블은 이전 버전과 동일하게 렌더링됩니다.</p>
+                      <AttendancePanel/>
                     </div>
                 )}
 

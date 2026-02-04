@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/api';
-import { Button } from 'flowbite-react';
-import { HiUserAdd, HiArrowLeft, HiOutlineIdentification, HiOutlineUser, HiOutlineOfficeBuilding, HiOutlineMail, HiOutlinePhone, HiOutlineCalendar } from 'react-icons/hi';
+
+import { HiUserAdd, HiOutlineIdentification, HiOutlineUser, HiOutlineOfficeBuilding, HiOutlineMail, HiOutlinePhone, HiOutlineCalendar } from 'react-icons/hi';
 
 function Register() {
   const navigate = useNavigate();
