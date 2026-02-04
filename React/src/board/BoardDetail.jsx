@@ -46,7 +46,13 @@ const BoardDetail = () => {
                     <p>{detail.title}</p>
                     <p>{detail.content}</p>
                     <p>{detail.position}</p>
-                    <p>{detail.importance}</p>
+                    <div>
+                        
+                        <span className='shrink-0 text-[10px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded'>
+                            {detail.importance}
+                        </span>
+                    </div>
+
                     <p>{new Date(detail.createdAt).toLocaleDateString('ko-KR').slice(0, -1)}</p>
                 </div>
 
