@@ -5,6 +5,7 @@ import Register from './register';
 import Employee from '../Components/Employee.jsx';
 import BoardList from '../board/boardList.jsx';
 import AttendancePanel from '../Components/AttendancePanel.jsx';
+import BoardAdd from '../board/BoardAdd.jsx';
 
 function Home() {
     const [user, setUser] = useState(null);
@@ -141,6 +142,10 @@ function Home() {
                                 className={`w-full text-left px-4 py-3 rounded-2xl transition-all duration-200 ${activeMenu === 'manage-register' ? 'bg-[#343A40] text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}>
                                 사원 등록
                             </button>
+                            <button onClick={() => setActiveMenu('manage-notices')}
+                                className={`w-full text-left px-4 py-3 rounded-2xl transition-all duration-200 ${activeMenu === 'manage-notices' ? 'bg-[#343A40] text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}>
+                                공지사항 관리
+                            </button>
                         </div>
                     )}
                 </nav>
@@ -204,6 +209,17 @@ function Home() {
 
                         <div>
                             <Register />
+                        </div>
+                    </div>
+                )}
+
+                {activeMenu === 'manage-notices' && (
+                    <div className="bg-[#F8F9FA] p-8 rounded-[32px]">
+                        <h2 className="text-xl font-black mb-6 text-blue-600">공지사항 관리
+                        </h2>
+
+                        <div>
+                            <BoardAdd/>
                         </div>
                     </div>
                 )}

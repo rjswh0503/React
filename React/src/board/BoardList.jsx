@@ -60,7 +60,7 @@ const BoardList = () => {
                                     {new Date(board.createdAt).toLocaleDateString('ko-KR').slice(0, -1)}
                                 </span>
                                 <span className='text-gray-500 text-xs bg-gray-100 px-2 py-0.5 rounded-full'>
-                                    {board.position}
+                                    {board.employee.user.role}
                                 </span>
                             </div>
                         </li>
