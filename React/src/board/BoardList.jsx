@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/api';
-
+import { Badge } from 'flowbite-react';
 
 
 const BoardList = () => {
@@ -40,12 +40,17 @@ const BoardList = () => {
                             {/* 왼쪽 영역: 태그 + 제목 */}
                             <div className='flex items-center gap-3 overflow-hidden'>
                                 {(new Date() - new Date(board.createdAt)) < 24 * 60 * 60 * 1000 && (
-                                    <span className='shrink-0 text-[10px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded'>
+                                    <span className='shrink-0 text-[12px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded'>
                                         NEW
                                     </span>
                                 )}
+                                
+                                <Badge variant="failure" className="shrink-0 text-[10px] px-1.5 py-0">
+                                    중요
+                                </Badge>
+
                                 <span className='truncate text-gray-700 group-hover:text-blue-600 font-medium cursor-pointer'>
-                                  <Link to={`/board/${board.noticeId}`}>{board.title}</Link>  
+                                    <Link to={`/board/${board.noticeId}`}>{board.title}</Link>
                                 </span>
                             </div>
 
