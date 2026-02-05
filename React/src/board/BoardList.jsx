@@ -45,7 +45,7 @@ const BoardList = () => {
                                     </span>
                                 )}
                                 
-                                <Badge variant="failure" className="shrink-0 text-[10px] px-1.5 py-0">
+                                <Badge color="failure" className="shrink-0 text-[10px] px-1.5 py-0">
                                     중요
                                 </Badge>
 
