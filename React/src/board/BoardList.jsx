@@ -32,7 +32,7 @@ const BoardList = () => {
         <>
             <div>
                 <ul className='space-y-3'> {/* 간격을 살짝 좁히면 더 밀도 있어 보입니다 */}
-                    {boardList.slice(0, 3).map(board => (
+                    {boardList.slice(0, 5).map(board => (
                         <li
                             key={board.id}
                             className='flex items-center justify-between px-4 py-2 text-sm group hover:bg-gray-50 rounded-lg transition-all'
@@ -44,9 +44,16 @@ const BoardList = () => {
                                         NEW
                                     </span>
                                 )}
-                                
-                                <Badge color="failure" className="shrink-0 text-[10px] px-1.5 py-0">
-                                    중요
+
+                                <Badge
+                                    // 공통적인 스타일은 앞에 두고, 변해야 하는 부분만 ${} 안에 넣습니다.
+                                    className={`shrink-0 text-[12px] font-bold px-1.5 py-0.5 rounded ${board.importance === 'HIGH'
+                                            ? 'bg-red-100 text-red-600'   
+                                            : 'bg-blue-100 text-blue-600' 
+                                        }`}
+                                >
+                                    {/* 뱃지 안에 들어갈 텍스트 내용 */}
+                                    {board.importance === 'HIGH' ? '긴급' : '일반'}
                                 </Badge>
 
                                 <span className='truncate text-gray-700 group-hover:text-blue-600 font-medium cursor-pointer'>
@@ -60,7 +67,7 @@ const BoardList = () => {
                                     {new Date(board.createdAt).toLocaleDateString('ko-KR').slice(0, -1)}
                                 </span>
                                 <span className='text-gray-500 text-xs bg-gray-100 px-2 py-0.5 rounded-full'>
-                                    {board.employee.user.role}
+                                    {board.position}
                                 </span>
                             </div>
                         </li>
