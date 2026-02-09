@@ -24,7 +24,7 @@ const BoardDetail = () => {
             } catch (e) {
                 console.error("에러", e);
                 console.error('에러 발생!');
-                console.log('에러 상세:', error.response?.data);  // ✅ 이거 확인!
+                console.log('에러 상세:', error.response?.data);
                 console.log('상태 코드:', error.response?.status);
                 console.log('요청 URL:', error.config?.url);
             }
@@ -60,7 +60,7 @@ const BoardDetail = () => {
 
                         <h1 className='text-2xl font-bold tracking-tight text-card-foreground leading-relaxed text-balance'>{detail.title}</h1>
 
-                        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
+                        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground pb-4 border-b border-gray-200">
                             <span className="flex items-center gap-1.5">
                                 <UserIcon className="h-3.5 w-3.5" />
                                 {detail.position}
@@ -69,10 +69,9 @@ const BoardDetail = () => {
                                 <CalendarIcon className="h-3.5 w-3.5" />
                                 {new Date(detail.createdAt).toLocaleDateString('ko-KR').slice(0, -1)}
                             </span>
-                            
                         </div>
                         
-                        <div className=' py-8'>
+                        <div className='py-8'>
                             <div className='whitespace-pre-wrap text-[15px] leading-relaxed text-card-foreground/90'>
                                 {detail.content}
                             </div>
