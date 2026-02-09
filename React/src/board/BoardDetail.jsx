@@ -3,7 +3,7 @@ import api from '../api/api';
 import { useParams } from 'react-router-dom';
 import { UserIcon, CalendarIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { FaArrowLeft } from "react-icons/fa";
+
 
 const BoardDetail = () => {
     const [detail, setDetail] = useState(null);
@@ -71,7 +71,8 @@ const BoardDetail = () => {
                             </span>
                             
                         </div>
-                        <div className='px-8 py-8'>
+                        
+                        <div className=' py-8'>
                             <div className='whitespace-pre-wrap text-[15px] leading-relaxed text-card-foreground/90'>
                                 {detail.content}
                             </div>
