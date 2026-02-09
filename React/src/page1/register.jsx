@@ -83,7 +83,7 @@ function Register() {
                 name="departNo" 
                 value={inputs.departNo} 
                 onChange={handleChange} 
-                placeholder="ex) DEV01" 
+                placeholder="ex) 1" 
                 icon={<HiOutlineOfficeBuilding />}
               />
 
