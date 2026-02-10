@@ -21,14 +21,20 @@ const Login = () => {
     };
 
     const handleLogin = async () => {
-        try {
-            await api.post('/api/login', inputs);
-            alert("로그인 성공");
-            navigate("/home");
-        } catch (e) {
-            alert("로그인 실패: 사번이나 비밀번호를 확인해주세요.");
-        }
-    };
+    try {
+        const response = await api.post('/api/login', inputs);
+        console.log('로그인 응답:', response.data);
+
+        //  추가된 부분: localStorage에 유저 정보 저장
+        localStorage.setItem('user', JSON.stringify(response.data));
+
+        alert("로그인 성공");
+        navigate("/home");
+    } catch (e) {
+        console.error('로그인 에러:', e);
+        alert("로그인 실패: 사번이나 비밀번호를 확인해주세요.");
+    }
+};
 
     return (
         <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center p-6">

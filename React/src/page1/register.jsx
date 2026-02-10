@@ -34,7 +34,7 @@ function Register() {
     try {
       await api.post('/api/admin/register', inputs);
       alert(`[${inputs.name}] 사원 등록이 완료되었습니다!`);
-      navigate('/home'); 
+      window.location.reload();
     } catch (err) {
       console.error(err);
       alert("등록 실패: " + (err.response?.data || "오류 발생"));
