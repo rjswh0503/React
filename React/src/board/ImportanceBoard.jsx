@@ -1,32 +1,36 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/api';
-import { Pin } from "lucide-react";
-import { Link } from 'react-router-dom';
+import {Link } from 'react-router-dom';
+import { Pin } from 'lucide-react';
 
-const BoardList = () => {
-    const [boardList, setBoardList] = useState([]);
+const ImportanceBoard = () => {
+
+    const [importanceBoard, setImportanceBoard] = useState([]);
+
 
     useEffect(() => {
+
         const fetchBoardList = async () => {
             try {
-                const response = await api.get('/api/board/list');
-                setBoardList(response.data);
-            } catch (e) {
-                console.error("게시글 조회 실패:" + e);
+                const response = await api.get('/api/board/importance');
+                setImportanceBoard(response.data);
+            } catch(e) {
+                console.error(e);
+                console.log("서버 응답 내용:", error.response?.data);
+      
+                
             }
         };
         fetchBoardList();
-    }, []);
+
+    },[]);
+
+
 
     return (
-        <div className='w-full max-w-3xl mx-auto'>
-            <div className='mb-6'>
-                                <Link to="/home">Back to list</Link>
-                            </div>
-            <div className='mb-4'>
-                <h1 className='text-2xl font-bold text-foreground tracking-tight'>공지사항</h1>
-
-            </div>
+        <div>
+            <div className='w-full max-w-3xl mx-auto'>
+        
         <div className='w-full max-w-5xl mx-auto py-10 px-4'>
             {/* 상단 테이블 헤더 */}
             <div className='grid grid-cols-[80px_1fr_120px] px-6 py-3 border-y border-gray-200 text-sm font-medium text-gray-500 bg-white'>
@@ -37,7 +41,7 @@ const BoardList = () => {
 
             {/* 리스트 본문 */}
             <div className='divide-y divide-gray-100 border-b border-gray-200'>
-                {boardList.map((board) => (
+                {importanceBoard.map((board) => (
                     <div 
                         key={board.id} 
                         className='grid grid-cols-[80px_1fr_120px] items-center px-6 py-4 hover:bg-gray-50 transition-colors group cursor-pointer'
@@ -78,13 +82,12 @@ const BoardList = () => {
                 ))}
             </div>
 
-            {/* 하단 카운트 */}
-            <div className='mt-4 text-center text-sm text-gray-500'>
-                총 {boardList.length}건
-            </div>
+           
         </div>
         </div>
-    );
-};
 
-export default BoardList;
+        </div>
+    )
+}
+
+export default ImportanceBoard;

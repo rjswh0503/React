@@ -3,11 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import api from '../api/api.jsx';
 import Register from './register';
 import Employee from '../Components/Employee.jsx';
-import BoardList from '../board/boardList.jsx';
 import AttendancePanel from '../Components/AttendancePanel.jsx';
 import BoardAdd from '../board/BoardAdd.jsx';
 import TaskCreate from './TaskCreate.jsx';
 import TaskList from './TaskList.jsx';
+import ImportanceBoard from '../board/ImportanceBoard.jsx';
 
 function Home() {
     const [user, setUser] = useState(null);
@@ -90,7 +90,7 @@ function Home() {
                         </button>
                     </div>
                     <div>
-                        <BoardList className='space-y-4' />
+                        <ImportanceBoard className='space-y-4' />
                     </div>
                 </div>
 

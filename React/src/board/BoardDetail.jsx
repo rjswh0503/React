@@ -46,15 +46,17 @@ const BoardDetail = () => {
         <>
             <div className='mx-auto max-w-4xl px-6 py-10'>
                 <div className='mb-6'>
-                    <Link to="/home">Back to list</Link>
+                    <Link to="/board/list">Back to list</Link>
                 </div>
                 <article className='rounded-lg border border-gray-300  bg-card'>
                     <div className='px-8 pt-8 pb-6'>
                         <div className='flex items-center gap-2 mb-4'>
 
-                            <span className='shrink-0 text-[10px] font-bold bg-red-100 text-red-600 px-1.5 py-0.5 rounded'>
-                                {detail.importance}
-                            </span>
+                            <span className={`inline-flex items-center justify-center px-3 py-1 text-xs font-bold text-white rounded-full ${
+            detail.importance === 'HIGH' ? 'bg-red-500' : 'bg-blue-500'
+        }`}>
+            {detail.importance === 'HIGH' ? '긴급' : '일반'}
+        </span>
                         </div>
 
 

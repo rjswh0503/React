@@ -7,6 +7,7 @@ import Home from './page1/home';
 import Good from './page1/good';
 import BoardList from './board/boardList';
 import BoardDetail from './board/BoardDetail';
+import ImportanceBoard from './board/ImportanceBoard';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
         <Route path='/good' element={<Good/>}/>
         <Route path='/board/list' element={<BoardList/>}/>
         <Route path='/board/:id' element={<BoardDetail/>}/>
+        <Route path='/board/importance' element={<ImportanceBoard/>}/>
       </Routes>
     </BrowserRouter>
   )
