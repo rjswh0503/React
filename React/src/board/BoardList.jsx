@@ -53,7 +53,7 @@ const BoardList = () => {
                             <Pin className='h-4 w-4 text-gray-400 shrink-0' />
                             
                             <span className='text-[15px] text-gray-800 truncate group-hover:text-black'>
-                                {board.title}
+                               <Link to={`/board/${board.noticeId}`}>{board.title}</Link>
                             </span>
 
                             {/* 신규 게시물 표시 (주황색 점) */}
