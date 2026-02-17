@@ -3,12 +3,16 @@ import api from '../api/api';
 import { useParams } from 'react-router-dom';
 import { UserIcon, CalendarIcon } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../context/Auth';
+import DeleteButton from '../Components/DeleteButton';
+import { useNavigate } from 'react-router-dom';
 
 
 const BoardDetail = () => {
     const [detail, setDetail] = useState(null);
     const { id } = useParams();
-
+    const { user } = useAuth();
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -52,11 +56,10 @@ const BoardDetail = () => {
                     <div className='px-8 pt-8 pb-6'>
                         <div className='flex items-center gap-2 mb-4'>
 
-                            <span className={`inline-flex items-center justify-center px-3 py-1 text-xs font-bold text-white rounded-full ${
-            detail.importance === 'HIGH' ? 'bg-red-500' : 'bg-blue-500'
-        }`}>
-            {detail.importance === 'HIGH' ? '긴급' : '일반'}
-        </span>
+                            <span className={`inline-flex items-center justify-center px-3 py-1 text-xs font-bold text-white rounded-full ${detail.importance === 'HIGH' ? 'bg-red-500' : 'bg-blue-500'
+                                }`}>
+                                {detail.importance === 'HIGH' ? '긴급' : '일반'}
+                            </span>
                         </div>
 
 
@@ -71,8 +74,22 @@ const BoardDetail = () => {
                                 <CalendarIcon className="h-3.5 w-3.5" />
                                 {new Date(detail.createdAt).toLocaleDateString('ko-KR').slice(0, -1)}
                             </span>
+                            {user && user.role === 'ADMIN' && (
+                                <Link to={`/board/edit/${detail.noticeId}`} className="text-blue-500 hover:text-blue-700 hover:underline">
+                                    수정
+                                </Link>
+                            )}
+                            {user?.role === 'ADMIN' && detail?.noticeId && (
+                                <DeleteButton
+                                    boardId={detail.noticeId}
+                                    onDeleteSuccess={() => navigate('/board/list')}
+                                    className="px-4 py-2 bg-red-50 text-red-600 rounded-xl font-bold hover:bg-red-600 hover:text-white transition-all"
+                                >
+                                    삭제하기
+                                </DeleteButton>
+                            )}
                         </div>
-                        
+
                         <div className='py-8'>
                             <div className='whitespace-pre-wrap text-[15px] leading-relaxed text-card-foreground/90'>
                                 {detail.content}

@@ -1,15 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../api/api';
+import { useAuth } from '../context/Auth';
 
 import { initFlowbite } from 'flowbite';
 
 const Login = () => {
+    
     const [inputs, setInputs] = useState({
         employeeNo: '',
         password: ''
     });
-
+    
+ 
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -27,7 +30,7 @@ const Login = () => {
 
         //  추가된 부분: localStorage에 유저 정보 저장
         localStorage.setItem('user', JSON.stringify(response.data));
-
+        
         alert("로그인 성공");
         navigate("/home");
     } catch (e) {
