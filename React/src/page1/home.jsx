@@ -8,6 +8,7 @@ import BoardAdd from '../board/BoardAdd.jsx';
 import TaskCreate from './TaskCreate.jsx';
 import TaskList from './TaskList.jsx';
 import ImportanceBoard from '../board/ImportanceBoard.jsx';
+import Search from '../Components/Search.jsx';
 
 function Home() {
     // 2. 기존의 user, loading 상태와 useEffect 로직을 모두 삭제하고 아래 한 줄로 대체
