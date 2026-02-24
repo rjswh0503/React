@@ -84,6 +84,15 @@ function Home() {
                         ))}
                     </div>
                 </div>
+               <div className='bg-[#F8F9FA] p-8 rounded-[32px] border border-gray-100 shadow-sm col-span-2'>
+  <h3 className='font-black text-lg mb-6'>사원 목록</h3>
+
+  <div className='space-y-6'>
+    <div className="overflow-x-auto">
+      <Employee />
+    </div>
+  </div>
+</div>
             </div>
         </div>
     );
@@ -127,10 +136,6 @@ function Home() {
                     {isAdmin && (
                         <div className="pt-8 space-y-2">
                             <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] px-4 mb-4 italic">Management</p>
-                            <button onClick={() => setActiveMenu('manage-users')}
-                                className={`w-full text-left px-4 py-3 rounded-2xl transition-all duration-200 ${activeMenu === 'manage-users' ? 'bg-[#343A40] text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}>
-                                사원 목록
-                            </button>
                             <button onClick={() => setActiveMenu('manage-attendance')}
                                 className={`w-full text-left px-4 py-3 rounded-2xl transition-all duration-200 ${activeMenu === 'manage-attendance' ? 'bg-[#343A40] text-white shadow-lg' : 'text-gray-500 hover:text-gray-300'}`}>
                                 사원 근태 조회
@@ -173,7 +178,6 @@ function Home() {
                         </div>
                     </div>
                 )}
-                {activeMenu === 'manage-users' && <div className="bg-[#F8F9FA] p-8 rounded-[32px]"><h2 className="text-xl font-black mb-6 text-blue-600">사원 목록</h2><Employee /></div>}
                 {activeMenu === 'manage-register' && <div className="bg-[#F8F9FA] p-8 rounded-[32px]"><h2 className="text-xl font-black mb-6 text-blue-600">사원 등록</h2><Register /></div>}
                 {activeMenu === 'manage-notices' && <div className="bg-[#F8F9FA] p-8 rounded-[32px]"><BoardAdd/></div>}
                 {activeMenu === 'manage-tasks' && <div className="bg-[#F8F9FA] p-8 rounded-[32px]"><h2 className="text-xl font-black mb-6 text-blue-600">업무 등록</h2><TaskCreate user={user}/></div>}
