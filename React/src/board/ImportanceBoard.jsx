@@ -1,93 +1,92 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api/api';
-import {Link } from 'react-router-dom';
-import { Pin } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Pin, Megaphone, ChevronRight } from 'lucide-react';
 
 const ImportanceBoard = () => {
-
     const [importanceBoard, setImportanceBoard] = useState([]);
-
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-
         const fetchBoardList = async () => {
             try {
+                setLoading(true);
                 const response = await api.get('/api/board/importance');
-                setImportanceBoard(response.data);
-            } catch(e) {
-                console.error(e);
-                console.log("서버 응답 내용:", error.response?.data);
-      
-                
+                // 최신순 정렬 후 상위 5개만 표시 (대시보드용)
+                const sortedData = response.data.sort((a, b) => 
+                    new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+                );
+                setImportanceBoard(sortedData.slice(0, 5));
+            } catch (e) {
+                console.error("공지사항 로드 실패:", e);
+            } finally {
+                setLoading(false);
             }
         };
         fetchBoardList();
-
-    },[]);
-
-
+    }, []);
 
     return (
-        <div>
-            <div className='w-full max-w-3xl mx-auto'>
-        
-        <div className='w-full max-w-5xl mx-auto py-10 px-4'>
-            {/* 상단 테이블 헤더 */}
-            <div className='grid grid-cols-[80px_1fr_120px] px-6 py-3 border-y border-gray-200 text-sm font-medium text-gray-500 bg-white'>
-                <span>분류</span>
-                <span>제목</span>
-                <span className='text-right'>날짜</span>
-            </div>
+        <div className="w-full">
+            {loading ? (
+                <div className="py-10 text-center text-slate-400 text-sm font-medium animate-pulse">
+                    공지사항을 불러오는 중...
+                </div>
+            ) : importanceBoard.length === 0 ? (
+                <div className="py-10 text-center text-slate-400 text-sm font-medium">
+                    등록된 중요 공지사항이 없습니다.
+                </div>
+            ) : (
+                <ul className="flex flex-col">
+                    {importanceBoard.map((board) => {
+                        const date = new Date(board.createdAt);
+                        const dateStr = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
 
-            {/* 리스트 본문 */}
-            <div className='divide-y divide-gray-100 border-b border-gray-200'>
-                {importanceBoard.map((board) => (
-                    <div 
-                        key={board.id} 
-                        className='grid grid-cols-[80px_1fr_120px] items-center px-6 py-4 hover:bg-gray-50 transition-colors group cursor-pointer'
-                    >
-                       {/* 분류 (Badge) */}
-                        <div>
-        <span className={`inline-flex items-center justify-center px-3 py-1 text-xs font-bold text-white rounded-full ${
-            board.importance === 'HIGH' ? 'bg-red-500' : 'bg-blue-500'
-        }`}>
-            {board.importance === 'HIGH' ? '긴급' : '일반'}
-        </span>
-    </div>
+                        // 신규 게시물 판별 (3일 이내)
+                        const now = new Date();
+                        const diffTime = Math.abs(now - date);
+                        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                        const isNew = diffDays <= 3;
 
-                        {/* 제목 영역 */}
-                        <div className='flex items-center gap-2 overflow-hidden'>
-                            {/* 고정 아이콘 (조건부 렌더링 가능) */}
-                            <Pin className='h-4 w-4 text-gray-400 shrink-0' />
-                            
-                            <span className='text-[15px] text-gray-800 truncate group-hover:text-black'>
-                               <Link to={`/board/${board.noticeId}`}>{board.title}</Link>
-                            </span>
+                        return (
+                            <li 
+                                key={board.id}
+                                className="group flex items-center justify-between p-3.5 rounded-2xl transition-all hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0"
+                            >
+                                <div className="flex items-center gap-3 min-w-0">
+                                    {/* 중요도 배지 */}
+                                    {board.importance === 'HIGH' ? (
+                                        <span className="shrink-0 px-2.5 py-0.5 bg-red-50 text-red-500 text-[10px] font-black rounded-lg border border-red-100">
+                                            필독
+                                        </span>
+                                    ) : isNew ? (
+                                        <span className="shrink-0 px-1.5 py-0.5 bg-blue-50 text-blue-500 text-[10px] font-black rounded-md">
+                                            N
+                                        </span>
+                                    ) : (
+                                        <Pin className="h-3.5 w-3.5 text-slate-300 shrink-0" />
+                                    )}
 
-                            {/* 신규 게시물 표시 (주황색 점) */}
-                            {(new Date() - new Date(board.createdAt)) < 24 * 60 * 60 * 1000 && (
-                                <span className='w-2 h-2 bg-orange-500 rounded-full shrink-0' title="New"></span>
-                            )}
-                        </div>
+                                    {/* 제목 */}
+                                    <Link 
+                                        to={`/board/${board.noticeId || board.id}`} 
+                                        className="text-[14px] text-slate-700 font-bold truncate group-hover:text-blue-600 transition-colors"
+                                    >
+                                        {board.title}
+                                    </Link>
+                                </div>
 
-                        {/* 날짜 */}
-                        <div className='text-right text-sm text-gray-400 font-light'>
-                            {new Date(board.createdAt).toLocaleDateString('ko-KR', {
-                                year: 'numeric',
-                                month: '2-digit',
-                                day: '2-digit'
-                            }).replace(/\. /g, '.').slice(0, -1)}
-                        </div>
-                    </div>
-                ))}
-            </div>
-
-           
+                                {/* 날짜 */}
+                                <span className="ml-4 text-[11px] text-slate-400 font-medium shrink-0 tabular-nums">
+                                    {dateStr}
+                                </span>
+                            </li>
+                        );
+                    })}
+                </ul>
+            )}
         </div>
-        </div>
-
-        </div>
-    )
-}
+    );
+};
 
 export default ImportanceBoard;
