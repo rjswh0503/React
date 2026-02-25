@@ -22,7 +22,7 @@ import DepartmentManagement from './admin/DepartmentManagement.jsx';
 import AdminDashboard from './admin/AdminDashboard.jsx';
 import Attendance from '../page1/attendance/Attendance.jsx';
 import TaskList from '../page1/task/TaskList.jsx';
-import ImportanceBoard from '../board/ImportanceBoard.jsx';
+import ImportanceBoard from '../Components/dashBoardMain/ImportanceBoard.jsx';
 
 function DashBoard() {
     const { user, logout, loading } = useAuth(); 

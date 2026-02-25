@@ -1,9 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/api';
-import { Textarea, TextInput } from 'flowbite-react';
-import { Select } from 'flowbite-react';
-import { Button } from 'flowbite-react';
 import { HiSpeakerphone } from 'react-icons/hi';
 
 
@@ -33,7 +30,7 @@ const BoardAdd = () => {
         try {
             await api.post("/api/board/add", board);
             alert("게시글 등록 완료");
-            window.location.reload();
+            navigate('/dashboard1/board/list');
         } catch (e) {
             console.error(e);
             alert("등록 실패: " + (e.response?.data || "오류 발생"));

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import api from '../api/api';
+import api from '../../api/api';
 import { Link } from 'react-router-dom';
 import { Pin, Megaphone, ChevronRight } from 'lucide-react';
 
@@ -69,7 +69,7 @@ const ImportanceBoard = () => {
 
                                     {/* 제목 */}
                                     <Link 
-                                        to={`/board/${board.noticeId || board.id}`} 
+                                        to={`/dashboard1/board/${board.noticeId || board.id}`} 
                                         className="text-[14px] text-slate-700 font-bold truncate group-hover:text-blue-600 transition-colors"
                                     >
                                         {board.title}

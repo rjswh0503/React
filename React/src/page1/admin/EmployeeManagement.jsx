@@ -1,5 +1,3 @@
-"use client"
-
 import React, { useEffect, useState } from "react";
 import api from "../../api/api";
 import { Search, UserPlus, Key, Eye, RotateCcw, X } from "lucide-react";
@@ -176,7 +174,7 @@ export default function EmployeeManagement() {
                 </div>
             </div>
 
-            {/* 사원 등록 모달 (기존과 동일) */}
+           
             {isRegModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 font-sans">
                     <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsRegModalOpen(false)}></div>
