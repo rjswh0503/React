@@ -1,159 +1,176 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../api/api';
+import { Layout, Calendar, FileText, User, Info, CheckCircle } from "lucide-react";
 
-const TaskCreate = ({ user }) => {  // ← user props 받기!
-    const isAdmin = user?.role === 'ADMIN';  // 관리자 여부 확인
+const TaskCreate = ({ user }) => {
+    const isAdmin = user?.role === 'ADMIN';
+    const [employees, setEmployees] = useState([]);
+    const [loading, setLoading] = useState(false);
 
-    // 입력 데이터 저장
-    const [taskData, setTaskData] = useState({
-        title: '',
-        description: '',
-        dueDate: '',
-        employeeId: ''  // 관리자만 입력
-    });
+    const [taskData, setTaskData] = useState({
+        title: '',
+        description: '',
+        dueDate: new Date().toISOString().split('T')[0],
+        employeeId: ''
+    });
 
-    // 입력값 변경 처리
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setTaskData({
-            ...taskData,
-            [name]: value
-        });
-    };
+    useEffect(() => {
+        if (isAdmin) {
+            fetchEmployees();
+        }
+    }, [isAdmin]);
 
-    // 업무 등록 API 호출
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    const fetchEmployees = async () => {
+        try {
+            const response = await api.get('/api/admin/employees');
+            setEmployees(response.data);
+        } catch (error) {
+            console.error('조회 실패:', error);
+        }
+    };
 
-        // ========== 디버깅 코드 시작 ==========
-        console.log('디버깅 시작');
-        console.log('user prop:', user);
-        console.log('user?.id:', user?.id);
-        console.log('user?.employeeId:', user?.employeeId);
-        console.log('isAdmin:', isAdmin);
-        // ========== 디버깅 코드 끝 ==========
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setTaskData({ ...taskData, [name]: value });
+    };
 
-        // 제출 데이터 준비
-        const submitData = {
-            title: taskData.title,
-            description: taskData.description,
-            dueDate: taskData.dueDate,
-            // 관리자: 입력한 employeeId 사용, 일반 사용자: 본인 employeeId
-            employeeId: isAdmin ? taskData.employeeId : user?.employeeId,
-            userId: user?.id  // 항상 로그인한 사용자
-        };
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
 
-        // ========== 전송 데이터 확인 ==========
-        console.log('전송할 데이터:', submitData);
-        console.log('employeeId 값:', submitData.employeeId);
-        console.log('userId 값:', submitData.userId);
-        // ========== 확인 끝 ==========
+        const submitData = {
+            ...taskData,
+            employeeId: isAdmin ? taskData.employeeId : user?.employeeId,
+            userId: user?.id
+        };
 
-        try {
-            const response = await api.post('/api/task', submitData);
-            alert('업무가 등록되었습니다!');
-            // 입력 필드 초기화
-            setTaskData({
-                title: '',
-                description: '',
-                dueDate: '',
-                employeeId: ''
-            });
-        } catch (error) {
-            console.error('업무 등록 실패:', error);
-            alert('업무 등록에 실패했습니다.');
-        }
-    };
+        try {
+            await api.post('/api/task', submitData);
+            alert('업무가 성공적으로 등록되었습니다!');
+            setTaskData({
+                title: '', description: '', 
+                dueDate: new Date().toISOString().split('T')[0], 
+                employeeId: ''
+            });
+        } catch (error) {
+            alert('업무 등록에 실패했습니다.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
-    return (
-        <div className="max-w-2xl mx-auto p-6">
-            <h2 className="text-2xl font-bold mb-6">업무 등록</h2>
+    return (
+        <div className="max-w-2xl mx-auto p-6 font-sans">
+            {/* 상단 타이틀 섹션 */}
+            <div className="flex items-center justify-between mb-8">
+                <div className="text-left">
+                    <h2 className="text-2xl font-black text-slate-900 tracking-tight">새 업무 등록</h2>
+                    <p className="text-sm text-slate-400 font-bold uppercase mt-1">New Task Assignment</p>
+                </div>
+                <div className="w-12 h-12 bg-slate-100 rounded-2xl flex items-center justify-center text-slate-900">
+                    <FileText className="w-6 h-6" />
+                </div>
+            </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
-                {/* 업무 제목 */}
-                <div>
-                    <label className="block text-sm font-medium mb-2">
-                        업무 제목
-                    </label>
-                    <input
-                        type="text"
-                        name="title"
-                        value={taskData.title}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="업무 제목을 입력하세요"
-                    />
-                </div>
+            {/* 카드 형태의 폼 */}
+            <div className="bg-white rounded-[2.5rem] border border-slate-100 shadow-2xl shadow-slate-200/50 overflow-hidden">
+                <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                    
+                    {/* 업무 제목 */}
+                    <div className="space-y-2 text-left">
+                        <label className="text-[11px] font-black text-slate-400 uppercase ml-1">업무 제목</label>
+                        <div className="relative">
+                            <Layout className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                            <input
+                                name="title"
+                                value={taskData.title}
+                                onChange={handleChange}
+                                required
+                                className="w-full pl-11 pr-4 py-4 bg-slate-50 border border-slate-50 rounded-2xl text-sm font-bold focus:bg-white focus:border-slate-900 outline-none transition-all text-slate-900"
+                                placeholder="업무 명칭을 입력하세요"
+                            />
+                        </div>
+                    </div>
 
-                {/* 업무 설명 */}
-                <div>
-                    <label className="block text-sm font-medium mb-2">
-                        업무 설명
-                    </label>
-                    <textarea
-                        name="description"
-                        value={taskData.description}
-                        onChange={handleChange}
-                        required
-                        rows="4"
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="업무 설명을 입력하세요"
-                    />
-                </div>
+                    <div className="grid grid-cols-2 gap-6">
+                        {/* 마감일 */}
+                        <div className="space-y-2 text-left">
+                            <label className="text-[11px] font-black text-slate-400 uppercase ml-1">마감 기한</label>
+                            <div className="relative">
+                                <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                <input
+                                    type="date"
+                                    name="dueDate"
+                                    value={taskData.dueDate}
+                                    onChange={handleChange}
+                                    required
+                                    className="w-full pl-11 pr-4 py-4 bg-slate-50 border border-slate-50 rounded-2xl text-sm font-bold focus:bg-white focus:border-slate-900 outline-none transition-all text-slate-900"
+                                />
+                            </div>
+                        </div>
 
-                {/* 마감일 */}
-                <div>
-                    <label className="block text-sm font-medium mb-2">
-                        마감일
-                    </label>
-                    <input
-                        type="date"
-                        name="dueDate"
-                        value={taskData.dueDate}
-                        onChange={handleChange}
-                        required
-                        className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    />
-                </div>
+                        {/* 담당자 선택 (관리자 전용) */}
+                        {isAdmin && (
+                            <div className="space-y-2 text-left">
+                                <label className="text-[11px] font-black text-slate-400 uppercase ml-1">담당 사원</label>
+                                <div className="relative">
+                                    <User className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
+                                    <select
+                                        name="employeeId"
+                                        value={taskData.employeeId}
+                                        onChange={handleChange}
+                                        required
+                                        className="w-full pl-11 pr-4 py-4 bg-slate-50 border border-slate-50 rounded-2xl text-sm font-bold focus:bg-white focus:border-slate-900 outline-none transition-all text-slate-900 appearance-none cursor-pointer"
+                                    >
+                                        <option value="">담당자 선택</option>
+                                        {employees.map((emp) => (
+                                            <option key={emp.employeeId} value={emp.employeeId}>
+                                                {emp.name} ({emp.position})
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+                    </div>
 
-                {/* 관리자만: 사원 ID 입력 */}
-                {isAdmin && (
-                    <div>
-                        <label className="block text-sm font-medium mb-2">
-                            사원 ID (employeeId)
-                        </label>
-                        <input
-                            type="number"
-                            name="employeeId"
-                            value={taskData.employeeId}
-                            onChange={handleChange}
-                            required
-                            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            placeholder="할당할 사원 ID를 입력하세요"
-                        />
-                    </div>
-                )}
+                    {/* 업무 설명 */}
+                    <div className="space-y-2 text-left">
+                        <label className="text-[11px] font-black text-slate-400 uppercase ml-1">업무 상세 내용</label>
+                        <textarea
+                            name="description"
+                            value={taskData.description}
+                            onChange={handleChange}
+                            required
+                            rows="4"
+                            className="w-full p-5 bg-slate-50 border border-slate-50 rounded-3xl text-sm font-bold focus:bg-white focus:border-slate-900 outline-none transition-all text-slate-900 resize-none"
+                            placeholder="업무에 대한 구체적인 지시사항을 입력하세요"
+                        />
+                    </div>
 
-                {/* 일반 사용자: 안내 메시지 */}
-                {!isAdmin && (
-                    <div className="bg-blue-50 p-4 rounded-lg">
-                        <p className="text-sm text-blue-600">
-                             본인에게 업무가 자동으로 할당됩니다.
-                        </p>
-                    </div>
-                )}
+                    {/* 안내 문구 */}
+                    {!isAdmin && (
+                        <div className="bg-blue-50/50 p-4 rounded-2xl flex items-start gap-3 border border-blue-100/50">
+                            <Info className="w-5 h-5 text-blue-500 mt-0.5" />
+                            <div className="text-left">
+                                <p className="text-xs font-black text-blue-900 uppercase">Notice</p>
+                                <p className="text-[11px] text-blue-600 font-bold mt-0.5">본인이 담당하는 업무로 즉시 등록됩니다.</p>
+                            </div>
+                        </div>
+                    )}
 
-                {/* 등록 버튼 */}
-                <button
-                    type="submit"
-                    className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
-                >
-                    업무 등록
-                </button>
-            </form>
-        </div>
-    );
+                    {/* 등록 버튼 */}
+                    <button
+                        type="submit"
+                        disabled={loading}
+                        className="w-full py-5 bg-slate-900 text-white font-black rounded-[1.5rem] hover:bg-black shadow-xl shadow-slate-200 transition-all uppercase text-xs tracking-widest active:scale-95 disabled:bg-slate-400"
+                    >
+                        {loading ? "Registering..." : "Create Task"}
+                    </button>
+                </form>
+            </div>
+        </div>
+    );
 };
 
 export default TaskCreate;

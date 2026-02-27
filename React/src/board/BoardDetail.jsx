@@ -101,7 +101,7 @@ const BoardDetail = () => {
                         {user && user.role === 'ADMIN' && (
                             <div className="flex items-center gap-2">
                                 <Link 
-                                    to={`/board/edit/${detail.noticeId}`} 
+                                    to={`/dashboard1/board/edit/${detail.noticeId}`} 
                                     className="rounded-lg bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
                                 >
                                     수정

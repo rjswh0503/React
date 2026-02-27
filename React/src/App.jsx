@@ -13,6 +13,12 @@ import BoardUpdate from './board/BoardUpdate.jsx';
 import DashBoard1 from './page1/Dashboard1.jsx';
 import MainContent from './Components/dashBoardMain/MainContent.jsx';
 import BoardAdd from './board/BoardAdd.jsx';
+import Attendance from './Components/dashBoardMain/Attendance.jsx';
+import EmployeeManagement from './page1/admin/EmployeeManagement.jsx';
+import Setting from './page1/Setting.jsx';
+import TaskList from './page1/TaskList.jsx';
+import AdminDashboard from './page1/admin/AdminDashboard.jsx';
+import AttendanceME from './page1/attendance/Attendance.jsx';
 
 function App() {
 
@@ -30,6 +36,12 @@ function App() {
     <Route path='board/:id' element={<BoardDetail/>}/>
     <Route path='board/importance' element={<ImportanceBoard/>}/>
     <Route path='board/edit/:id' element={<BoardUpdate/>}/>
+    <Route path='attendance/me' element={<Attendance/>}/>
+    <Route path='attendance/report/me' element={<AttendanceME/>}/>
+    <Route path='employees' element={<EmployeeManagement/>}/>
+    <Route path='mypage' element={<Setting/>}/>
+    <Route path='task' element={<TaskList/>}/>
+    <Route path='adminDashboard' element={<AdminDashboard/>}/>
   </Route>
   <Route path='/dashboard' element={<DashBoard/>}/>
 </Routes>

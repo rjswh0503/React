@@ -16,7 +16,7 @@ const DeleteButton = ({ boardId }) => {
                 // boardId를 사용합니다.
                 await api.delete(`/api/board/${boardId}`); 
                 alert("게시글이 삭제되었습니다.");
-                navigate('/board/list');
+                navigate('/dashboard1/board/list');
                 
             } catch (e) {
                 console.error(e);

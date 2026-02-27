@@ -2,7 +2,8 @@ import React from 'react';
 import { Dropdown, DropdownDivider, DropdownHeader, DropdownItem  } from 'flowbite-react'; // 👈 핵심: Dropdown 하나만 가져옵니다.
 import  FlowbiteAvatar  from './Avatar';
 import { useAuth } from '../context/Auth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+
 
 const UserDropdown = () => {
     const { user, logout } = useAuth();
@@ -12,6 +13,8 @@ const UserDropdown = () => {
         await logout();
         navigate('/login');
     }
+
+
 
     return (
         
@@ -26,7 +29,7 @@ const UserDropdown = () => {
                 <span className='block truncate text-xs font-medium text-slate-500'>{user?.position || '직급'}</span>
             </DropdownHeader>
 
-            <DropdownItem>내 정보</DropdownItem>
+            <DropdownItem><Link to="/dashboard1/mypage">내 정보</Link></DropdownItem>
             <DropdownDivider/>
             <DropdownItem onClick={handleLogout} className="text-red-600 font-bold">
                 로그아웃

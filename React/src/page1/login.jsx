@@ -32,7 +32,7 @@ const Login = () => {
         localStorage.setItem('user', JSON.stringify(response.data));
         
         alert("로그인 성공");
-        navigate("/dashboard");
+        navigate("/dashboard1");
     } catch (e) {
         console.error('로그인 에러:', e);
         alert("로그인 실패: 사번이나 비밀번호를 확인해주세요.");

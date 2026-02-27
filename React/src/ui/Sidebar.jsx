@@ -29,14 +29,27 @@ const Sidebar = ({ isAdmin }) => {
                     <span className="text-sm font-medium">대시보드</span>
                 </div>
             </Link>
-            <Link to="/dashboard1/attendance" className="block">
+            <Link to="/dashboard1/attendance/me" className="block">
                 <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
-                    isActive('/dashboard1/attendance') ? 'bg-slate-800 text-white shadow-md' : 'hover:bg-slate-900 hover:text-slate-200'
+                    isActive('/dashboard1/attendance/me') ? 'bg-slate-800 text-white shadow-md' : 'hover:bg-slate-900 hover:text-slate-200'
                 }`}>
                     <span className="text-sm font-medium">출퇴근 기록</span>
                 </div>
             </Link>
-            {/* 추가 메뉴들 동일 구조 */}
+            <Link to="/dashboard1/attendance/report/me" className="block">
+                <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
+                    isActive('/dashboard1/attendance/report/me') ? 'bg-slate-800 text-white shadow-md' : 'hover:bg-slate-900 hover:text-slate-200'
+                }`}>
+                    <span className="text-sm font-medium">근태 리포트</span>
+                </div>
+            </Link>
+            <Link to="/dashboard1/task" className="block">
+                <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
+                    isActive('/dashboard1/task') ? 'bg-slate-800 text-white shadow-md' : 'hover:bg-slate-900 hover:text-slate-200'
+                }`}>
+                    <span className="text-sm font-medium">근무 일정</span>
+                </div>
+            </Link>
           </div>
         </div>
 
@@ -50,6 +63,15 @@ const Sidebar = ({ isAdmin }) => {
                     isActive('/dashboard1/employees') ? 'bg-slate-800 text-white shadow-md' : 'hover:bg-slate-900 hover:text-slate-200'
                 }`}>
                     <span className="text-sm font-medium">사원 관리</span>
+                </div>
+              </Link>
+            </div>
+            <div className="space-y-1">
+              <Link to="/dashboard1/adminDashboard" className="block">
+                <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
+                    isActive('/dashboard1/adminDashboard') ? 'bg-slate-800 text-white shadow-md' : 'hover:bg-slate-900 hover:text-slate-200'
+                }`}>
+                    <span className="text-sm font-medium">관리자 대시보드</span>
                 </div>
               </Link>
             </div>
