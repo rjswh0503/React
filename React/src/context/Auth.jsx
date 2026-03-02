@@ -17,8 +17,8 @@ export const AuthProvider = ({ children }) => { // 이름을 AuthProvider로 통
                     setUser(JSON.parse(savedUser));
                 }
                 const res = await api.get('/api/check-login');
-                const updatedUser = savedUser 
-                    ? { ...JSON.parse(savedUser), ...res.data } 
+                const updatedUser = savedUser
+                    ? { ...JSON.parse(savedUser), ...res.data }
                     : res.data;
 
                 setUser(updatedUser);
@@ -36,11 +36,10 @@ export const AuthProvider = ({ children }) => { // 이름을 AuthProvider로 통
     const login = (userData) => {
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
-        navigate('/home');
     };
 
     const logout = async () => {
-        try { await api.post('/api/logout'); } catch (err) {}
+        try { await api.post('/api/logout'); } catch (err) { }
         setUser(null);
         localStorage.removeItem('user');
     };

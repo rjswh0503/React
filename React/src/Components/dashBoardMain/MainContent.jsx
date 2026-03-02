@@ -1,5 +1,5 @@
 import React from 'react';
-import Notices from './ImportanceBoard'; 
+import Notices from './ImportanceBoard';
 import { ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import Appendance from '../AttendancePanel';
@@ -9,7 +9,7 @@ const MainContent = () => {
         <div className="space-y-6">
             {/* 상단 섹션: 출퇴근 체크(1) & 주간 근무시간(2) */}
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                
+
                 {/* [1] 출퇴근 체크 위젯 */}
                 <div className="bg-white p-8 rounded-[2.5rem] border border-slate-200 shadow-sm h-[420px] flex flex-col justify-between">
                     <div>
@@ -59,8 +59,8 @@ const MainContent = () => {
             <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm shadow-slate-200/50 overflow-hidden">
                 <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
                     <h3 className="text-lg font-black text-slate-800">중요 공지사항</h3>
-                    <Link 
-                        to="/dashboard1/board/list" 
+                    <Link
+                        to="/dashboard/board/list"
                         className="group flex items-center gap-1.5 px-4 py-2 text-xs font-black text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
                     >
                         <span>전체보기</span>

@@ -33,12 +33,12 @@ const BoardList = () => {
             {/* 상단 네비게이션 및 타이틀 */}
             <div className='mb-6 flex items-center justify-between'>
                 <div>
-                    <Link 
-                        to="/dashboard1" 
+                    <Link
+                        to="/dashboard"
                         className='mb-4 inline-flex items-center text-sm font-medium text-gray-500 transition-colors hover:text-gray-900'
                     >
                         <ChevronLeft className="mr-1 h-4 w-4" />
-                        목록으로 돌아가기
+                        대시보드로 돌아가기
                     </Link>
                     <h1 className='text-2xl font-bold tracking-tight text-gray-900'>공지사항</h1>
                 </div>
@@ -50,13 +50,13 @@ const BoardList = () => {
                 <div className='flex border-b border-gray-100 px-6 py-5 bg-white'>
                     <h2 className='text-lg font-bold text-gray-900'>전체 공지 목록</h2>
                     {isAdmin && (
-    <Link 
-  to="/dashboard1/board/add" 
-  className="px-5 py-2.5 bg-white text-slate-700 rounded-xl font-bold text-sm border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all"
->
-  글쓰기
-</Link>
-  )}
+                        <Link
+                            to="/dashboard/board/add"
+                            className="px-5 py-2.5 bg-white text-slate-700 rounded-xl font-bold text-sm border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all"
+                        >
+                            글쓰기
+                        </Link>
+                    )}
                 </div>
 
                 {/* 리스트 본문 */}
@@ -70,7 +70,7 @@ const BoardList = () => {
                             {boardList.map((board) => {
                                 const date = new Date(board.createdAt);
                                 const dateStr = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
-                                
+
                                 const now = new Date();
                                 const diffTime = Math.abs(now.getTime() - date.getTime());
                                 const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -80,7 +80,7 @@ const BoardList = () => {
                                 return (
                                     <Link
                                         key={board.id}
-                                        to={`/dashboard1/board/${board.noticeId}`}
+                                        to={`/dashboard/board/${board.noticeId}`}
                                         className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-gray-200 p-4 transition-colors hover:bg-gray-50"
                                     >
                                         <div className="flex items-start gap-4 overflow-hidden">
@@ -96,16 +96,15 @@ const BoardList = () => {
                                                             NEW
                                                         </span>
                                                     )}
-                                                    <span className={`rounded px-2 py-0.5 text-xs font-bold ${
-                                                        isHigh ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600'
-                                                    }`}>
+                                                    <span className={`rounded px-2 py-0.5 text-xs font-bold ${isHigh ? 'bg-gray-900 text-white' : 'bg-gray-100 text-gray-600'
+                                                        }`}>
                                                         {isHigh ? '필독' : '공지'}
                                                     </span>
                                                     <h3 className="truncate font-semibold text-base text-gray-900 group-hover:underline group-hover:underline-offset-4">
                                                         {board.title}
                                                     </h3>
                                                 </div>
-                                                
+
                                                 {/* 내용 미리보기 (2줄 이상 말줄임표 처리) */}
                                                 <p className="line-clamp-2 text-sm text-gray-500 mt-1">
                                                     {board.content}

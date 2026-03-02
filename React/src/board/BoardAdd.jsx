@@ -30,7 +30,7 @@ const BoardAdd = () => {
         try {
             await api.post("/api/board/add", board);
             alert("게시글 등록 완료");
-            navigate('/dashboard1/board/list');
+            navigate('/dashboard/board/list');
         } catch (e) {
             console.error(e);
             alert("등록 실패: " + (e.response?.data || "오류 발생"));

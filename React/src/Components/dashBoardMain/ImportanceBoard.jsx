@@ -13,7 +13,7 @@ const ImportanceBoard = () => {
                 setLoading(true);
                 const response = await api.get('/api/board/importance');
                 // 최신순 정렬 후 상위 5개만 표시 (대시보드용)
-                const sortedData = response.data.sort((a, b) => 
+                const sortedData = response.data.sort((a, b) =>
                     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
                 );
                 setImportanceBoard(sortedData.slice(0, 5));
@@ -38,7 +38,7 @@ const ImportanceBoard = () => {
                 </div>
             ) : (
                 <ul className="flex flex-col">
-                    {importanceBoard.map((board) => {
+                    {importanceBoard.map((board, index) => {
                         const date = new Date(board.createdAt);
                         const dateStr = `${date.getFullYear()}.${String(date.getMonth() + 1).padStart(2, '0')}.${String(date.getDate()).padStart(2, '0')}`;
 
@@ -49,8 +49,8 @@ const ImportanceBoard = () => {
                         const isNew = diffDays <= 3;
 
                         return (
-                            <li 
-                                key={board.id}
+                            <li
+                                key={board.id || `board-${index}`}
                                 className="group flex items-center justify-between p-3.5 rounded-2xl transition-all hover:bg-slate-50 cursor-pointer border-b border-slate-50 last:border-0"
                             >
                                 <div className="flex items-center gap-3 min-w-0">
@@ -68,8 +68,8 @@ const ImportanceBoard = () => {
                                     )}
 
                                     {/* 제목 */}
-                                    <Link 
-                                        to={`/dashboard1/board/${board.noticeId || board.id}`} 
+                                    <Link
+                                        to={`/dashboard/board/${board.noticeId || board.id}`}
                                         className="text-[14px] text-slate-700 font-bold truncate group-hover:text-blue-600 transition-colors"
                                     >
                                         {board.title}

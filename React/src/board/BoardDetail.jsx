@@ -58,12 +58,12 @@ const BoardDetail = () => {
         <div className='mx-auto w-full max-w-4xl px-4 py-8'>
             {/* 상단 네비게이션 */}
             <div className='mb-6'>
-                <Link 
-                    to="/dashboard1/board/list" 
+                <Link
+                    to="/dashboard/board/list"
                     className='inline-flex items-center text-sm font-medium text-gray-500 transition-colors hover:text-gray-900'
                 >
                     <ChevronLeft className="mr-1 h-4 w-4" />
-                    목록으로 돌아가기
+                    공지사항 목록
                 </Link>
             </div>
 
@@ -71,11 +71,10 @@ const BoardDetail = () => {
                 {/* 헤더 영역 */}
                 <div className='border-b border-gray-100 p-6 sm:p-8'>
                     <div className='mb-4 flex items-center gap-2'>
-                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold ${
-                            detail.importance === 'HIGH' 
-                                ? 'bg-red-500 text-white' 
+                        <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-bold ${detail.importance === 'HIGH'
+                                ? 'bg-red-500 text-white'
                                 : 'bg-gray-100 text-gray-700'
-                        }`}>
+                            }`}>
                             {detail.importance === 'HIGH' ? '긴급' : '일반'}
                         </span>
                     </div>
@@ -100,8 +99,8 @@ const BoardDetail = () => {
                         {/* 관리자 권한 액션 버튼 */}
                         {user && user.role === 'ADMIN' && (
                             <div className="flex items-center gap-2">
-                                <Link 
-                                    to={`/dashboard1/board/edit/${detail.noticeId}`} 
+                                <Link
+                                    to={`/dashboard/board/edit/${detail.noticeId}`}
                                     className="rounded-lg bg-gray-50 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
                                 >
                                     수정

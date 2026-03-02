@@ -25,9 +25,9 @@ const Setting = () => {
     const handleInfoSave = async (e) => {
         e.preventDefault();
         try {
-            // 백엔드 @PutMapping("/me/edit") 호출
+            // 백엔드 @PutMapping("/me") 호출
             // EmployeeUpdateDto 필드명에 맞춰서 데이터 전송
-            await api.put('/api/employees/me/edit', {
+            await api.put('/api/userinfo/me', {
                 name: name,
                 email: email,
                 phone: phone
@@ -53,7 +53,7 @@ const Setting = () => {
         try {
             // 백엔드 @PutMapping("/password") 호출
             // PasswordChangeDto의 필드명인 currentPassword와 newPassword를 사용
-            await api.put('/api/employees/password', {
+            await api.put('/api/userinfo/password', {
                 currentPassword: oldPassword, // 백엔드 DTO 필드명 매칭
                 newPassword: newPassword
             }, { withCredentials: true });
@@ -74,65 +74,66 @@ const Setting = () => {
     if (!user) return <div className="p-10 text-center">로딩 중...</div>;
 
     return (
-        <div className="max-w-3xl mx-auto p-6 space-y-10 text-left">
-            <div className="border-b border-gray-200 pb-5">
-                <h1 className="text-3xl font-extrabold text-gray-900 tracking-tight">계정 설정</h1>
-                <p className="text-gray-500 mt-2 font-medium">개인 정보 및 보안 설정을 관리하세요.</p>
+        <div className="max-w-3xl mx-auto p-8 space-y-12 text-left bg-transparent">
+            <div>
+                <h1 className="text-3xl font-black text-gray-900 tracking-tight">계정 설정</h1>
+                <p className="text-gray-400 mt-2 font-medium text-sm">개인 정보 및 보안 설정을 관리하세요.</p>
             </div>
 
             <div className="grid gap-8">
                 {/* 개인 정보 수정 섹션 */}
-                <section className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden text-left">
-                    <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 font-bold text-gray-800">
-                        개인 정보 수정
+                <section className="bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-gray-100 p-8 transition-all relative overflow-hidden text-left">
+                    <div className="mb-8">
+                        <h2 className="text-xl font-bold text-gray-900 tracking-tight">개인 정보 수정</h2>
+                        <p className="text-sm text-gray-400 font-medium">기본적인 연락처 정보를 관리합니다.</p>
                     </div>
-                    <form onSubmit={handleInfoSave} className="p-6 space-y-5">
+                    <form onSubmit={handleInfoSave} className="space-y-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="flex flex-col gap-2">
-                                <label className="text-sm font-bold text-gray-700">사번 (수정 불가)</label>
-                                <input 
+                            <div className="group">
+                                <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">사번 (수정 불가)</label>
+                                <input
                                     type="text"
                                     value={user.employeeNo || ""}
-                                    disabled 
-                                    className="p-2.5 bg-gray-100 border border-gray-200 rounded-lg text-gray-400 cursor-not-allowed font-mono text-sm outline-none" 
+                                    disabled
+                                    className="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-gray-400 cursor-not-allowed font-mono text-sm outline-none"
                                 />
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="text-sm font-bold text-gray-700">이름</label>
-                                <input 
-                                    type="text" 
+                            <div className="group">
+                                <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">이름</label>
+                                <input
+                                    type="text"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     disabled
-                                    className="p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
+                                    className="w-full px-5 py-3.5 bg-gray-50 border border-gray-100 rounded-2xl text-gray-400 cursor-not-allowed text-sm outline-none"
                                 />
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-bold text-gray-700">이메일 주소</label>
-                            <input 
-                                type="email" 
+                        <div className="group">
+                            <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">이메일 주소</label>
+                            <input
+                                type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="workhub@company.com"
-                                className="p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
+                                className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm placeholder:text-gray-300"
                             />
                         </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-bold text-gray-700">전화번호</label>
-                            <input 
-                                type="text" 
+                        <div className="group">
+                            <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">전화번호</label>
+                            <input
+                                type="text"
                                 value={phone}
                                 onChange={(e) => setPhone(e.target.value)}
                                 placeholder="010-1234-5678"
-                                className="p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
+                                className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm placeholder:text-gray-300"
                             />
                         </div>
 
-                        <div className="flex justify-start pt-2">
-                            <button type="submit" className="px-8 py-2.5 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">
+                        <div className="flex justify-start pt-4 border-t border-gray-50">
+                            <button type="submit" className="px-8 py-3.5 bg-black hover:bg-gray-800 text-white font-bold rounded-2xl transition-all active:scale-[0.98] shadow-xl shadow-black/10 text-sm">
                                 내 정보 저장
                             </button>
                         </div>
@@ -140,47 +141,48 @@ const Setting = () => {
                 </section>
 
                 {/* 비밀번호 변경 섹션 */}
-                <section className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden text-left">
-                    <div className="px-6 py-4 border-b border-gray-100 bg-gray-50/50 font-bold text-gray-800">
-                        비밀번호 보안
+                <section className="bg-white rounded-3xl shadow-[0_10px_40px_rgba(0,0,0,0.04)] border border-gray-100 p-8 transition-all relative overflow-hidden text-left">
+                    <div className="mb-8">
+                        <h2 className="text-xl font-bold text-gray-900 tracking-tight">비밀번호 보안</h2>
+                        <p className="text-sm text-gray-400 font-medium">안전한 서비스 이용을 위해 비밀번호를 주기적으로 변경하세요.</p>
                     </div>
-                    <form onSubmit={handlePwdSave} className="p-6 space-y-5">
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-bold text-gray-700">현재 비밀번호</label>
-                            <input 
-                                type="password" 
+                    <form onSubmit={handlePwdSave} className="space-y-6">
+                        <div className="group">
+                            <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">현재 비밀번호</label>
+                            <input
+                                type="password"
                                 value={oldPassword}
                                 onChange={(e) => setOldPassword(e.target.value)}
-                                placeholder="현재 비밀번호 입력"
-                                className="p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
+                                placeholder="••••••••"
+                                className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm placeholder:text-gray-300"
                             />
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div className="flex flex-col gap-2">
-                                <label className="text-sm font-bold text-gray-700">새 비밀번호</label>
-                                <input 
-                                    type="password" 
+                            <div className="group">
+                                <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">새 비밀번호</label>
+                                <input
+                                    type="password"
                                     value={newPassword}
                                     onChange={(e) => setNewPassword(e.target.value)}
-                                    placeholder="새 비밀번호 입력"
-                                    className="p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
+                                    placeholder="••••••••"
+                                    className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm placeholder:text-gray-300"
                                 />
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <label className="text-sm font-bold text-gray-700">새 비밀번호 확인</label>
-                                <input 
-                                    type="password" 
+                            <div className="group">
+                                <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">새 비밀번호 확인</label>
+                                <input
+                                    type="password"
                                     value={confirmPassword}
                                     onChange={(e) => setConfirmPassword(e.target.value)}
-                                    placeholder="새 비밀번호 다시 입력"
-                                    className="p-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none transition-all" 
+                                    placeholder="••••••••"
+                                    className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm placeholder:text-gray-300"
                                 />
                             </div>
                         </div>
 
-                        <div className="flex justify-start pt-2">
-                            <button type="submit" className="px-8 py-2.5 bg-red-600 text-white font-bold rounded-lg hover:bg-red-700 transition-colors shadow-sm">
+                        <div className="flex justify-start pt-4 border-t border-gray-50">
+                            <button type="submit" className="px-8 py-3.5 bg-red-50 hover:bg-red-100 text-red-600 font-bold rounded-2xl transition-all active:scale-[0.98] text-sm">
                                 비밀번호 변경
                             </button>
                         </div>

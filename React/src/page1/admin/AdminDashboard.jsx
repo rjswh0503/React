@@ -8,18 +8,22 @@ export default function AdminDashboard() {
     const [requests, setRequests] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [user, setUser] = useState([]);
-    
-    
+
+
+
+    const [attendanceCount, setAttendanceCount] = useState(0);
 
     // API 연동을 위한 Effect
     useEffect(() => {
         const fetchDashboardData = async () => {
             try {
+                const [empRes, attCountRes] = await Promise.all([
+                    api.get('/api/admin/employees'),
+                    api.get('/api/admin/attendance/today/count')
+                ]);
 
-                const response = await api.get('api/admin/employees');
-                setUser(response.data);
-               
-                
+                setUser(empRes.data);
+                setAttendanceCount(attCountRes.data);
                 setIsLoading(false);
             } catch (error) {
                 console.error("데이터 로드 실패:", error);
@@ -29,6 +33,8 @@ export default function AdminDashboard() {
 
         fetchDashboardData();
     }, []);
+
+    const attendanceRatio = user.length > 0 ? ((attendanceCount / user.length) * 100).toFixed(1) : 0;
 
     return (
         <div className="flex flex-col gap-6 p-6 bg-white">
@@ -57,8 +63,10 @@ export default function AdminDashboard() {
                         <Clock className="h-4 w-4 text-slate-400" />
                     </div>
                     <div>
-                        <div className="text-2xl font-black text-slate-900">0 명</div>
-                        <p className="text-[11px] text-slate-400 font-medium mt-1 text-blue-600">출근 비율: 0%</p>
+                        <div className="text-2xl font-black text-slate-900">{attendanceCount} 명</div>
+                        <p className={`text-[11px] font-medium mt-1 ${attendanceRatio > 80 ? 'text-blue-600' : 'text-orange-600'}`}>
+                            출근 비율: {attendanceRatio}%
+                        </p>
                     </div>
                 </div>
 
@@ -83,7 +91,7 @@ export default function AdminDashboard() {
                         <p className="text-xs text-slate-500 font-medium">사원들이 신청한 휴가 및 근태 정정 요청을 관리합니다.</p>
                     </div>
                 </div>
-                
+
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left border-collapse">
                         <thead>
