@@ -6,13 +6,14 @@ import { useAuth } from '../context/Auth';
 import { initFlowbite } from 'flowbite';
 
 const Login = () => {
-    
+
     const [inputs, setInputs] = useState({
         employeeNo: '',
         password: ''
     });
-    
- 
+
+
+    const { login } = useAuth();
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -24,26 +25,30 @@ const Login = () => {
     };
 
     const handleLogin = async () => {
-    try {
-        const response = await api.post('/api/login', inputs);
-        console.log('로그인 응답:', response.data);
+        try {
+            const response = await api.post('/api/login', inputs);
+            console.log('로그인 응답:', response.data);
 
-        //  추가된 부분: localStorage에 유저 정보 저장
-        localStorage.setItem('user', JSON.stringify(response.data));
-        
-        alert("로그인 성공");
-        navigate("/dashboard1");
-    } catch (e) {
-        console.error('로그인 에러:', e);
-        alert("로그인 실패: 사번이나 비밀번호를 확인해주세요.");
-    }
-};
+            // AuthContext의 login 함수 사용 (상태 업데이트 및 저장)
+            login(response.data);
+
+            alert("로그인 성공");
+            if (response.data.role === 'ADMIN') {
+                navigate("/dashboard/admin");
+            } else {
+                navigate("/dashboard");
+            }
+        } catch (e) {
+            console.error('로그인 에러:', e);
+            alert("로그인 실패: 사번이나 비밀번호를 확인해주세요.");
+        }
+    };
 
     return (
         <div className="min-h-screen bg-[#F9FAFB] flex items-center justify-center p-6">
             {/* 메인 로그인 컨테이너: 약간 더 넓은 라운드와 깊이감 있는 그림자 */}
             <div className="w-full max-w-[420px] bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 p-10 transition-all">
-                
+
                 {/* 로고 및 상단 헤더 */}
                 <div className="mb-12 text-center">
                     <div className="inline-flex items-center justify-center w-12 h-12 bg-black rounded-xl mb-6 shadow-lg shadow-gray-200">
@@ -68,7 +73,7 @@ const Login = () => {
                             className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm placeholder:text-gray-300"
                         />
                     </div>
-                    
+
                     <div className="group">
                         <div className="flex justify-between items-center mb-2 ml-1">
                             <label className="text-[13px] font-bold text-gray-700 transition-colors group-focus-within:text-black">
@@ -90,7 +95,7 @@ const Login = () => {
                 </div>
 
                 {/* 로그인 버튼: 모던한 블랙 풀 버튼 */}
-                <button 
+                <button
                     onClick={handleLogin}
                     className="w-full mt-10 bg-black hover:bg-gray-800 text-white rounded-2xl h-14 flex items-center justify-center transition-all active:scale-[0.98] shadow-xl shadow-black/10"
                 >
@@ -100,7 +105,7 @@ const Login = () => {
                 {/* 하단 안내 문구 */}
                 <div className="mt-10 text-center">
                     <p className="text-[13px] text-gray-400 font-medium">
-                        계정 문제 발생 시 
+                        계정 문제 발생 시
                         <span className="text-black font-bold ml-1.5 cursor-pointer underline underline-offset-4 decoration-gray-200 hover:decoration-black transition-all">
                             관리자에게 문의
                         </span>

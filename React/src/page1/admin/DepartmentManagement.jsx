@@ -60,6 +60,26 @@ export default function DepartmentManagement() {
         setIsDialogOpen(true)
     }
 
+    // 누락되었던 API 함수들 임시 구현
+    const fetchDepartments = async () => {
+        // 실제 API 경로로 수정해야 합니다
+        // const res = await api.get('/api/admin/departments');
+        // return res.data;
+        return [];
+    }
+
+    const adminCreateDepartment = async (data) => {
+        // await api.post('/api/admin/departments', data);
+    }
+
+    const adminUpdateDepartment = async (id, data) => {
+        // await api.put(`/api/admin/departments/${id}`, data);
+    }
+
+    const adminDeleteDepartment = async (id) => {
+        // await api.delete(`/api/admin/departments/${id}`);
+    }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -93,8 +113,8 @@ export default function DepartmentManagement() {
                     <h1 className="text-2xl font-bold tracking-tight">부서 관리</h1>
                     <p className="text-sm text-slate-500 font-medium">조직의 부서를 추가하고 정보를 관리합니다.</p>
                 </div>
-                <button 
-                    onClick={handleOpenCreate} 
+                <button
+                    onClick={handleOpenCreate}
                     className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-4 py-2 rounded-xl text-sm font-bold shadow-sm transition-all active:scale-95"
                 >
                     <Plus className="h-4 w-4" />
@@ -157,13 +177,13 @@ export default function DepartmentManagement() {
                                         </td>
                                         <td className="px-6 py-4 text-right">
                                             <div className="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                <button 
+                                                <button
                                                     onClick={() => handleOpenEdit(dept)}
                                                     className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                                                 >
                                                     <Edit className="h-4 w-4" />
                                                 </button>
-                                                <button 
+                                                <button
                                                     onClick={() => handleDelete(dept.departNo)}
                                                     className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                                                 >
@@ -183,7 +203,7 @@ export default function DepartmentManagement() {
             {isDialogOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsDialogOpen(false)} />
-                    
+
                     <div className="relative w-full max-w-md bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
                         <form onSubmit={handleSubmit}>
                             <div className="p-6 border-b border-slate-100 flex justify-between items-center">
@@ -201,55 +221,55 @@ export default function DepartmentManagement() {
                             <div className="p-6 space-y-4">
                                 <div className="space-y-1.5">
                                     <label className="text-xs font-bold text-slate-700 ml-1">부서명</label>
-                                    <input 
+                                    <input
                                         className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all text-slate-900 font-medium"
-                                        value={formData.departName} 
-                                        onChange={e => setFormData({ ...formData, departName: e.target.value })} 
-                                        required 
+                                        value={formData.departName}
+                                        onChange={e => setFormData({ ...formData, departName: e.target.value })}
+                                        required
                                     />
                                 </div>
                                 <div className="space-y-1.5">
                                     <label className="text-xs font-bold text-slate-700 ml-1">연락처</label>
-                                    <input 
+                                    <input
                                         placeholder="02-XXX-XXXX"
                                         className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all text-slate-900 font-medium"
-                                        value={formData.departTel} 
-                                        onChange={e => setFormData({ ...formData, departTel: e.target.value })} 
-                                        required 
+                                        value={formData.departTel}
+                                        onChange={e => setFormData({ ...formData, departTel: e.target.value })}
+                                        required
                                     />
                                 </div>
                                 <div className="space-y-1.5">
                                     <label className="text-xs font-bold text-slate-700 ml-1">이메일</label>
-                                    <input 
-                                        type="email" 
+                                    <input
+                                        type="email"
                                         placeholder="dept@workhub.com"
                                         className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all text-slate-900 font-medium"
-                                        value={formData.departMail} 
-                                        onChange={e => setFormData({ ...formData, departMail: e.target.value })} 
-                                        required 
+                                        value={formData.departMail}
+                                        onChange={e => setFormData({ ...formData, departMail: e.target.value })}
+                                        required
                                     />
                                 </div>
                                 <div className="space-y-1.5">
                                     <label className="text-xs font-bold text-slate-700 ml-1">위치</label>
-                                    <input 
+                                    <input
                                         placeholder="예: 4층 A구역"
                                         className="w-full px-3 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all text-slate-900 font-medium"
-                                        value={formData.departLocation} 
-                                        onChange={e => setFormData({ ...formData, departLocation: e.target.value })} 
-                                        required 
+                                        value={formData.departLocation}
+                                        onChange={e => setFormData({ ...formData, departLocation: e.target.value })}
+                                        required
                                     />
                                 </div>
                             </div>
 
                             <div className="p-6 bg-slate-50 flex gap-3">
-                                <button 
-                                    type="button" 
+                                <button
+                                    type="button"
                                     onClick={() => setIsDialogOpen(false)}
                                     className="flex-1 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 text-sm font-bold rounded-xl hover:bg-slate-50 transition-all"
                                 >
                                     취소
                                 </button>
-                                <button 
+                                <button
                                     type="submit"
                                     className="flex-1 px-4 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-xl hover:bg-slate-800 transition-all shadow-lg"
                                 >

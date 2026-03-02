@@ -2,16 +2,19 @@
 
 import React, { useEffect, useState } from "react"
 import api from "../api/api";
-import { 
-    Clock, Calendar as CalendarIcon, CheckCircle2, 
-    Plus, ChevronRight, UserSquare2, RotateCcw, X 
+import {
+    Clock, Calendar as CalendarIcon, CheckCircle2,
+    Plus, ChevronRight, UserSquare2, RotateCcw, X
 } from "lucide-react"
 
-export default function SchedulePage({ user }) {
+import { useAuth } from "../context/Auth.jsx";
+
+export default function SchedulePage() {
+    const { user } = useAuth();
     const [tasks, setTasks] = useState([])
     const [loading, setLoading] = useState(true)
-    const [activeTab, setActiveTab] = useState("daily") 
-    
+    const [activeTab, setActiveTab] = useState("daily")
+
     // 모달 관련 상태
     const [isRegModalOpen, setIsRegModalOpen] = useState(false)
     const [inputs, setInputs] = useState({
@@ -66,7 +69,9 @@ export default function SchedulePage({ user }) {
             });
             loadData(); // 목록 새로고침
         } catch (e) {
-            alert("등록 실패: 입력 정보를 확인해주세요.");
+            console.error("일정 등록 실패 상세:", e);
+            const errorMsg = e.response?.data?.message || e.response?.data || "입력 정보를 확인해주세요.";
+            alert(`등록 실패: ${errorMsg}`);
         }
     };
 
@@ -98,7 +103,7 @@ export default function SchedulePage({ user }) {
                     <p className="text-sm text-slate-500 font-medium">전체 업무 현황과 일정을 한눈에 확인합니다.</p>
                 </div>
                 {/* 일정 추가 버튼: 클릭 시 모달 오픈 */}
-                <button 
+                <button
                     onClick={() => setIsRegModalOpen(true)}
                     className="flex items-center gap-2 bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-2xl text-sm font-bold shadow-sm transition-all active:scale-95"
                 >
@@ -168,7 +173,7 @@ export default function SchedulePage({ user }) {
                                             <p className="text-xs text-slate-500 mt-0.5">{task.description}</p>
                                         </td>
                                         <td className="px-6 py-4 text-center">
-                                            <select 
+                                            <select
                                                 value={task.status}
                                                 onChange={(e) => handleStatusChange(task.id, e.target.value)}
                                                 className={`px-3 py-1 rounded-full text-[11px] font-black border transition-all outline-none appearance-none cursor-pointer ${getStatusStyle(task.status)}`}
@@ -190,49 +195,51 @@ export default function SchedulePage({ user }) {
             {/* ✅ 일정 등록 모달 (사원 관리 모달 스타일 적용) */}
             {isRegModalOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
-                    <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onClick={() => setIsRegModalOpen(false)}></div>
-                    <div className="relative w-full max-w-xl bg-white rounded-[2rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+                    <div className="absolute inset-0 bg-gray-900/40 backdrop-blur-sm" onClick={() => setIsRegModalOpen(false)}></div>
+                    <div className="relative w-full max-w-md bg-white rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.05)] border border-gray-100 animate-in fade-in zoom-in duration-200">
                         <form onSubmit={handleRegisterSubmit}>
-                            <div className="p-8 border-b border-slate-100 flex justify-between items-center">
+                            <div className="p-8 border-b border-gray-50 flex justify-between items-center">
                                 <div>
-                                    <h3 className="text-xl font-black text-slate-900 text-left">새 일정 등록</h3>
-                                    <p className="text-xs text-slate-400 font-bold mt-1 uppercase text-left">Schedule Registration</p>
+                                    <h3 className="text-xl font-black text-gray-900 text-left">일정 등록</h3>
+                                    <p className="text-[13px] text-gray-400 font-medium mt-1 text-left">새로운 일정을 생성합니다.</p>
                                 </div>
-                                <button type="button" onClick={() => setIsRegModalOpen(false)} className="text-slate-400 hover:text-slate-600 transition-colors">
+                                <button type="button" onClick={() => setIsRegModalOpen(false)} className="text-gray-400 hover:text-black transition-colors">
                                     <X className="h-5 w-5" />
                                 </button>
                             </div>
 
-                            <div className="p-8 space-y-5">
-                                <div className="space-y-2 text-left">
-                                    <label className="text-[11px] font-black text-slate-400 uppercase ml-1">업무 제목</label>
-                                    <input name="title" value={inputs.title} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:bg-white focus:border-slate-900 outline-none transition-all text-slate-900" required placeholder="업무 제목을 입력하세요" />
+                            <div className="p-8 space-y-6">
+                                <div className="group text-left">
+                                    <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">업무 제목</label>
+                                    <input name="title" value={inputs.title} onChange={handleInputChange} className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm placeholder:text-gray-300" required placeholder="업무 제목을 입력하세요" />
                                 </div>
-                                
+
                                 <div className="grid grid-cols-2 gap-4 text-left">
-                                    <div className="space-y-2 text-left">
-                                        <label className="text-[11px] font-black text-slate-400 uppercase ml-1">기한</label>
-                                        <input type="date" name="dueDate" value={inputs.dueDate} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:bg-white focus:border-slate-900 outline-none transition-all text-slate-900" required />
+                                    <div className="group text-left">
+                                        <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">기한</label>
+                                        <input type="date" name="dueDate" value={inputs.dueDate} onChange={handleInputChange} className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm" required />
                                     </div>
-                                    <div className="space-y-2 text-left">
-                                        <label className="text-[11px] font-black text-slate-400 uppercase ml-1">초기 상태</label>
-                                        <select name="status" value={inputs.status} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:bg-white focus:border-slate-900 outline-none transition-all text-slate-900 appearance-none cursor-pointer">
-                                            <option value="TODO">대기</option>
+                                    <div className="group text-left">
+                                        <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">초기 상태</label>
+                                        <select name="status" value={inputs.status} onChange={handleInputChange} className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm appearance-none cursor-pointer">
+                                            <option value="TODO">대기 (TODO)</option>
                                             <option value="IN_PROGRESS">진행중</option>
                                             <option value="DONE">완료</option>
                                         </select>
                                     </div>
                                 </div>
 
-                                <div className="space-y-2 text-left">
-                                    <label className="text-[11px] font-black text-slate-400 uppercase ml-1">상세 설명</label>
-                                    <textarea name="description" value={inputs.description} onChange={handleInputChange} className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-2xl text-sm font-bold focus:bg-white focus:border-slate-900 outline-none transition-all text-slate-900 resize-none" rows="3" placeholder="업무에 대한 상세 설명을 입력하세요" />
+                                <div className="group text-left">
+                                    <label className="block text-[13px] font-bold text-gray-700 mb-2 ml-1 transition-colors group-focus-within:text-black">상세 설명</label>
+                                    <textarea name="description" value={inputs.description} onChange={handleInputChange} className="w-full px-5 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:ring-2 focus:ring-black/5 focus:border-black outline-none transition-all duration-200 text-sm placeholder:text-gray-300 resize-none" rows="3" placeholder="업무에 대한 상세 설명을 입력하세요" />
                                 </div>
                             </div>
 
-                            <div className="p-8 bg-slate-50/50 border-t border-slate-100 flex gap-4">
-                                <button type="button" onClick={() => setIsRegModalOpen(false)} className="flex-1 py-4 bg-white border border-slate-200 text-slate-500 font-black rounded-2xl hover:bg-slate-100 transition-all uppercase text-xs tracking-widest">Cancel</button>
-                                <button type="submit" className="flex-1 py-4 bg-slate-900 text-white font-black rounded-2xl hover:bg-black shadow-xl shadow-slate-200 transition-all uppercase text-xs tracking-widest">Register</button>
+                            <div className="p-8 bg-transparent flex justify-end gap-3 border-t border-gray-50">
+                                <button type="button" onClick={() => setIsRegModalOpen(false)} className="px-6 py-3 bg-gray-100 text-gray-500 font-bold rounded-2xl hover:bg-gray-200 transition-all text-sm">취소</button>
+                                <button type="submit" className="px-6 py-3 bg-black text-white font-bold rounded-2xl hover:bg-gray-800 shadow-xl shadow-black/10 transition-all active:scale-[0.98] text-sm flex items-center gap-2">
+                                    등록
+                                </button>
                             </div>
                         </form>
                     </div>
