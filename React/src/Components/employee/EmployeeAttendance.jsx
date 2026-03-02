@@ -1,116 +1,124 @@
+"use client"
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar as CalendarIcon, Clock, Tag } from 'lucide-react';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
+import { Clock, ArrowLeft, User } from 'lucide-react';
 import api from '../../api/api';
-import AttendanceFilter from './AttendanceFilter'; // 위에서 만든 컴포넌트
 
 const statusStyles = {
     NORMAL: "bg-emerald-50 text-emerald-600 border-emerald-100",
-    LATE: "bg-rose-50 text-rose-600 border-rose-100",
-    ABSENT: "bg-slate-50 text-slate-400 border-slate-100",
-    // 추가 상태들
+    LATE: "bg-amber-50 text-amber-600 border-amber-100",
+    ABSENT: "bg-rose-50 text-rose-600 border-rose-100",
     VACATION: "bg-blue-50 text-blue-600 border-blue-100",
+    OVERTIME: "bg-indigo-50 text-indigo-600 border-indigo-100",
 };
 
-const EmployeeAttendance = () => {
+export default function EmployeeAttendance() {
     const { id } = useParams();
     const navigate = useNavigate();
+    const location = useLocation(); // ✅ 리액트 라우터의 state 데이터를 가져옴
 
-    const [attendanceList, setAttendanceList] = useState([]);
+    // ✅ 전달받은 state가 있으면 사용하고, 없으면 빈 객체 할당
+    const empInfo = location.state || {}; 
+    const [records, setRecords] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // 날짜 상태 (기본값: 이번 달 1일 ~ 오늘)
-    const [startDate, setStartDate] = useState(new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0]);
-    const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
-
-    // [API 호출] 특정 기간 조회 (/me/period 사용)
-    const fetchAttendanceData = useCallback(async () => {
+    const loadAttendance = useCallback(async () => {
+        if (!id) return;
         setLoading(true);
         try {
-            // 컨트롤러의 @GetMapping("/me/period") 구조에 맞춤
-            // 주의: 관리자용 API라면 주소를 `/api/admin/attendance/employee/${id}/period` 등으로 맞춰야 할 수 있습니다.
-            const response = await api.get(`/api/attendance/me/period`, {
-                params: { startDate, endDate }
-            });
-            setAttendanceList(response.data || []);
-        } catch (error) {
-            console.error('근태 조회 실패:', error);
+            const response = await api.get(`/api/admin/attendance/employee/${id}`);
+            setRecords(Array.isArray(response.data) ? response.data : []);
+        } catch (err) {
+            console.error("데이터 로드 실패:", err);
+            setRecords([]);
         } finally {
             setLoading(false);
         }
-    }, [startDate, endDate]);
+    }, [id]);
 
-    useEffect(() => {
-        fetchAttendanceData();
-    }, [id]); // 초기 로드
-
-    const handleReset = () => {
-        const firstDay = new Date(new Date().getFullYear(), new Date().getMonth(), 1).toISOString().split('T')[0];
-        const today = new Date().toISOString().split('T')[0];
-        setStartDate(firstDay);
-        setEndDate(today);
-        // 리셋 후 다시 조회하고 싶다면 fetch 호출 추가
-    };
+    useEffect(() => { loadAttendance(); }, [loadAttendance]);
 
     return (
-        <div className="space-y-6 max-w-7xl mx-auto p-6">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                    <button onClick={() => navigate(-1)} className="p-2 hover:bg-white rounded-full border border-transparent hover:border-slate-200 transition-all">
-                        <ArrowLeft className="w-6 h-6 text-slate-600" />
+        <div className="max-w-6xl mx-auto p-8 animate-in fade-in duration-700">
+            {/* 상단 헤더: 사원 목록에서 넘겨받은 이름을 즉시 표시 */}
+            <div className="flex items-center justify-between mb-10">
+                <div className="flex items-center gap-6 text-left">
+                    <button 
+                        onClick={() => navigate(-1)} 
+                        className="p-3 bg-white hover:bg-slate-50 rounded-2xl transition-all border border-slate-200 shadow-sm group"
+                    >
+                        <ArrowLeft className="w-5 h-5 text-slate-400 group-hover:text-slate-900" />
                     </button>
                     <div>
-                        <h2 className="text-2xl font-black text-slate-900">근태 기록 조회</h2>
-                        <p className="text-slate-500 text-sm font-medium">사원번호: {id}</p>
+                        <div className="flex items-center gap-3 mb-1">
+                            <h2 className="text-2xl font-black text-slate-900 tracking-tight">
+                                {/* ✅ 넘겨받은 이름이 있으면 이름 표시, 없으면 기본 메시지 */}
+                                {empInfo.name ? `${empInfo.name} 님의 근무 기록` : "사원 근무 기록"}
+                            </h2>
+                            {/* ✅ 넘겨받은 사번이 있으면 바로 표시 */}
+                            <span className="px-3 py-1 bg-blue-600 text-white rounded-lg text-[10px] font-black tracking-widest flex items-center gap-1.5 shadow-sm">
+                                <User className="w-3 h-3" /> {empInfo.employeeNo || `ID:${id}`}
+                            </span>
+                        </div>
+                        <p className="text-slate-400 font-medium text-sm italic">전체 출퇴근 타임라인입니다.</p>
                     </div>
                 </div>
-
-                {/* 필터 컴포넌트 삽입 */}
-                <AttendanceFilter 
-                    startDate={startDate}
-                    endDate={endDate}
-                    setStartDate={setStartDate}
-                    setEndDate={setEndDate}
-                    onSearch={fetchAttendanceData}
-                    onReset={handleReset}
-                />
+                
+                <div className="hidden md:flex flex-col items-end">
+                    <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-1">Total Records</span>
+                    <span className="text-2xl font-black text-slate-900">{records.length}건</span>
+                </div>
             </div>
 
-            {/* 테이블 섹션 (기존 코드와 동일) */}
+            {/* 메인 리스트 카드 */}
             <div className="bg-white rounded-[2.5rem] border border-slate-200 shadow-sm overflow-hidden">
-                {/* ... (기존 테이블 렌더링 로직) ... */}
                 <div className="p-8">
                     {loading ? (
-                         <div className="py-20 text-center animate-pulse font-black text-slate-300">데이터를 불러오는 중...</div>
+                        <div className="py-40 flex flex-col items-center gap-4 animate-pulse">
+                            <div className="w-10 h-10 border-4 border-slate-100 border-t-slate-900 rounded-full animate-spin" />
+                            <p className="text-slate-300 font-black text-[10px] tracking-widest uppercase italic">Loading Timeline</p>
+                        </div>
                     ) : (
-                        <div className="overflow-x-auto">
-                            <table className="w-full text-left">
+                        <div className="overflow-x-auto text-left">
+                            <table className="w-full">
                                 <thead>
                                     <tr className="border-b border-slate-100">
-                                        <th className="pb-4 px-4 text-[11px] font-black uppercase text-slate-400">날짜</th>
-                                        <th className="pb-4 px-4 text-[11px] font-black uppercase text-slate-400">출퇴근 시간</th>
-                                        <th className="pb-4 px-4 text-[11px] font-black uppercase text-slate-400 text-center">상태</th>
-                                        <th className="pb-4 px-4 text-[11px] font-black uppercase text-slate-400">비고</th>
+                                        <th className="pb-6 px-6 text-[11px] font-black uppercase tracking-widest text-slate-400 text-center">날짜</th>
+                                        <th className="pb-6 px-6 text-[11px] font-black uppercase tracking-widest text-slate-400">출근 시각</th>
+                                        <th className="pb-6 px-6 text-[11px] font-black uppercase tracking-widest text-slate-400">퇴근 시각</th>
+                                        <th className="pb-6 px-6 text-[11px] font-black uppercase tracking-widest text-slate-400 text-center">근태 상태</th>
+                                        <th className="pb-6 px-6 text-[11px] font-black uppercase tracking-widest text-slate-400">비고</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    {attendanceList.map(record => (
-                                        <tr key={record.id} className="border-b border-slate-50 hover:bg-slate-50/50 transition-all">
-                                            <td className="p-4 text-sm font-black text-slate-700">{record.workDate}</td>
-                                            <td className="p-4">
-                                                <div className="flex items-center gap-2 text-xs font-bold text-slate-500">
-                                                    <Clock className="w-3 h-3 text-blue-400" />
-                                                    {record.checkInTime?.substring(0,5)} ~ {record.checkOutTime?.substring(0,5) || "--:--"}
-                                                </div>
-                                            </td>
-                                            <td className="p-4 text-center">
-                                                <span className={`px-2 py-1 rounded-lg text-[10px] font-black border ${statusStyles[record.statusCode]}`}>
-                                                    {record.status}
-                                                </span>
-                                            </td>
-                                            <td className="p-4 text-xs text-slate-400 italic">{record.notes || "-"}</td>
-                                        </tr>
-                                    ))}
+                                <tbody className="divide-y divide-slate-50 font-sans">
+                                    {records.length === 0 ? (
+                                        <tr><td colSpan={5} className="py-32 text-center text-slate-300 font-bold italic">기록된 근무 데이터가 없습니다.</td></tr>
+                                    ) : (
+                                        records.map((record) => (
+                                            <tr key={record.id} className="group hover:bg-slate-50/50 transition-all cursor-default">
+                                                <td className="p-6 text-sm font-black text-slate-800 text-center tabular-nums">{record.workDate}</td>
+                                                <td className="p-6">
+                                                    <div className="flex items-center gap-3 font-mono text-sm font-bold text-slate-500 group-hover:text-blue-600 transition-colors">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-blue-400 group-hover:scale-125 transition-transform" />
+                                                        {record.checkInTime ? record.checkInTime.substring(0, 5) : "--:--"}
+                                                    </div>
+                                                </td>
+                                                <td className="p-6">
+                                                    <div className="flex items-center gap-3 font-mono text-sm font-bold text-slate-500 group-hover:text-rose-500 transition-colors">
+                                                        <div className="w-1.5 h-1.5 rounded-full bg-rose-400 group-hover:scale-125 transition-transform" />
+                                                        {record.checkOutTime ? record.checkOutTime.substring(0, 5) : "--:--"}
+                                                    </div>
+                                                </td>
+                                                <td className="p-6 text-center">
+                                                    <span className={`inline-flex items-center px-4 py-1.5 rounded-full text-[10px] font-black border tracking-tight shadow-sm ${statusStyles[record.statusCode] || "bg-slate-50 text-slate-400"}`}>
+                                                        {record.status}
+                                                    </span>
+                                                </td>
+                                                <td className="p-6 text-xs text-slate-400 italic truncate max-w-[180px]">{record.notes || "-"}</td>
+                                            </tr>
+                                        ))
+                                    )}
                                 </tbody>
                             </table>
                         </div>
@@ -119,6 +127,4 @@ const EmployeeAttendance = () => {
             </div>
         </div>
     );
-};
-
-export default EmployeeAttendance;
+}

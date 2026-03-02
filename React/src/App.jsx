@@ -36,7 +36,7 @@ function App() {
       <AuthProvider>
         <Routes>
           {/* 기본 경로 설정 */}
-          <Route path="/" element={<Navigate to="/dashboard1" replace />} />
+          <Route path="/" element={<Navigate to="/login" replace />} />
           <Route path='/login' element={<Login />} />
           <Route path='/admin/register' element={<Register />} />
 
