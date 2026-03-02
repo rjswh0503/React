@@ -69,7 +69,7 @@ const ImportanceBoard = () => {
 
                                     {/* 제목 */}
                                     <Link
-                                        to={`/dashboard/board/${board.noticeId || board.id}`}
+                                        to={`/dashboard1/board/${board.noticeId || board.id}`}
                                         className="text-[14px] text-slate-700 font-bold truncate group-hover:text-blue-600 transition-colors"
                                     >
                                         {board.title}

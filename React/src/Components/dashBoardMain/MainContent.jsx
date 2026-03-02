@@ -60,7 +60,7 @@ const MainContent = () => {
                 <div className="px-8 py-6 border-b border-slate-50 flex items-center justify-between bg-slate-50/30">
                     <h3 className="text-lg font-black text-slate-800">중요 공지사항</h3>
                     <Link
-                        to="/dashboard/board/list"
+                        to="/dashboard1/board/list"
                         className="group flex items-center gap-1.5 px-4 py-2 text-xs font-black text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-xl transition-all"
                     >
                         <span>전체보기</span>

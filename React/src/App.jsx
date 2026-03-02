@@ -63,7 +63,7 @@ function App() {
             <Route path='admin' element={<AdminDashboard />} />
             <Route path='employees' element={<EmployeeManagement />} />
             <Route path='department' element={<DepartmentManagement />} />
-            <Route path='/dashboard1/employee/:id/attendance' element={<EmployeeAttendance/>}/>
+            <Route path='employee/:id/attendance' element={<EmployeeAttendance/>}/>
           </Route>
 
           {/* 404 처리 (필요시 추가) */}

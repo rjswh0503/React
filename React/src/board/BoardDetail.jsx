@@ -59,7 +59,7 @@ const BoardDetail = () => {
             {/* 상단 네비게이션 */}
             <div className='mb-6'>
                 <Link
-                    to="/dashboard/board/list"
+                    to="/dashboard1/board/list"
                     className='inline-flex items-center text-sm font-medium text-gray-500 transition-colors hover:text-gray-900'
                 >
                     <ChevronLeft className="mr-1 h-4 w-4" />

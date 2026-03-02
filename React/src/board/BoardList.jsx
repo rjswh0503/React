@@ -34,7 +34,7 @@ const BoardList = () => {
             <div className='mb-6 flex items-center justify-between'>
                 <div>
                     <Link
-                        to="/dashboard"
+                        to="/dashboard1"
                         className='mb-4 inline-flex items-center text-sm font-medium text-gray-500 transition-colors hover:text-gray-900'
                     >
                         <ChevronLeft className="mr-1 h-4 w-4" />
@@ -51,7 +51,7 @@ const BoardList = () => {
                     <h2 className='text-lg font-bold text-gray-900'>전체 공지 목록</h2>
                     {isAdmin && (
                         <Link
-                            to="/dashboard/board/add"
+                            to="/dashboard1/board/add"
                             className="px-5 py-2.5 bg-white text-slate-700 rounded-xl font-bold text-sm border border-slate-200 shadow-sm hover:bg-slate-50 hover:border-slate-300 transition-all"
                         >
                             글쓰기
@@ -80,7 +80,7 @@ const BoardList = () => {
                                 return (
                                     <Link
                                         key={board.id}
-                                        to={`/dashboard/board/${board.noticeId}`}
+                                        to={`/dashboard1/board/${board.noticeId}`}
                                         className="group flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-xl border border-gray-200 p-4 transition-colors hover:bg-gray-50"
                                     >
                                         <div className="flex items-start gap-4 overflow-hidden">
