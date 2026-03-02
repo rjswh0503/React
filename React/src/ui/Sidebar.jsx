@@ -75,6 +75,15 @@ const Sidebar = ({ isAdmin }) => {
                 </div>
               </Link>
             </div>
+            <div className="space-y-1">
+              <Link to="/dashboard1/department" className="block">
+                <div className={`flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition-all ${
+                    isActive('/dashboard1/department') ? 'bg-slate-800 text-white shadow-md' : 'hover:bg-slate-900 hover:text-slate-200'
+                }`}>
+                    <span className="text-sm font-medium">부서 관리</span>
+                </div>
+              </Link>
+            </div>
           </div>
         )}
       </div>

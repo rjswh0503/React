@@ -64,8 +64,8 @@ function DashboardLayout() {
     const isUser = user?.role === 'USER';
 
     const isActive = (path) => {
-        if (path === '/dashboard' && location.pathname === '/dashboard') return true;
-        if (path !== '/dashboard' && location.pathname.startsWith(path)) return true;
+        if (path === '/dashboard1' && location.pathname === '/dashboard') return true;
+        if (path !== '/dashboard1' && location.pathname.startsWith(path)) return true;
         return false;
     };
 
@@ -83,15 +83,15 @@ function DashboardLayout() {
                     <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] px-4 mb-4 italic">Overview</p>
 
                     <MenuButton
-                        active={isActive('/dashboard') && location.pathname === '/dashboard'}
+                        active={isActive('/dashboard1') && location.pathname === '/dashboard1'}
                         to="/dashboard"
                         icon={<LayoutDashboard className="h-5 w-5" />}
                         label="대시보드"
                     />
 
                     <MenuButton
-                        active={isActive('/dashboard/board')}
-                        to="/dashboard/board/list"
+                        active={isActive('/dashboard1/board')}
+                        to="/dashboard1/board/list"
                         icon={<Bell className="h-5 w-5" />}
                         label="공지사항"
                     />
@@ -101,25 +101,25 @@ function DashboardLayout() {
                             <p className="text-[10px] text-slate-500 font-black uppercase tracking-[0.2em] px-4 mb-4 italic">Personal</p>
                             <MenuButton
                                 active={isActive('/dashboard/attendance/records')}
-                                to="/dashboard/attendance/records"
+                                to="/dashboard1/attendance/records"
                                 icon={<Clock className="h-5 w-5" />}
                                 label="출퇴근 기록"
                             />
                             <MenuButton
                                 active={isActive('/dashboard/task')}
-                                to="/dashboard/task"
+                                to="/dashboard1/task"
                                 icon={<Calendar className="h-5 w-5" />}
                                 label="근무 일정"
                             />
                             <MenuButton
                                 active={isActive('/dashboard/attendance/report')}
-                                to="/dashboard/attendance/report"
+                                to="/dashboard1/attendance/report"
                                 icon={<FileBarChart className="h-5 w-5" />}
                                 label="근태 리포트"
                             />
                             <MenuButton
                                 active={isActive('/dashboard/mypage')}
-                                to="/dashboard/mypage"
+                                to="/dashboard1/mypage"
                                 icon={<Settings className="h-5 w-5" />}
                                 label="설정"
                             />
@@ -131,19 +131,19 @@ function DashboardLayout() {
                             <p className="text-[10px] text-gray-500 font-black uppercase tracking-[0.2em] px-4 mb-4 italic">Management</p>
                             <MenuButton
                                 active={isActive('/dashboard/admin')}
-                                to="/dashboard/admin"
+                                to="/dashboard1/admin"
                                 icon={<LayoutDashboard className="h-5 w-5" />}
                                 label="관리자 대시보드"
                             />
                             <MenuButton
                                 active={isActive('/dashboard/employees')}
-                                to="/dashboard/employees"
+                                to="/dashboard1/employees"
                                 icon={<Users className="h-5 w-5" />}
                                 label="사원 관리"
                             />
                             <MenuButton
                                 active={isActive('/dashboard/department')}
-                                to="/dashboard/department"
+                                to="/dashboard1/department"
                                 icon={<Building2 className="h-5 w-5" />}
                                 label="부서 관리"
                             />
